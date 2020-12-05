@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog, command, Context
-from discord import utils, Embed, Colour
+from discord import Embed
 from discord.ext import commands
 
 

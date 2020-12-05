@@ -1,8 +1,6 @@
 from discord.ext.commands import Cog, command, Context
 from discord import utils, Embed, Colour, Message
 from discord.ext import commands
-import time
-from os import environ
 
 
 class General(Cog):

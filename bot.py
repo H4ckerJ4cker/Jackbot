@@ -2,8 +2,6 @@ from discord import Game, Intents
 from discord.ext.commands import Bot, when_mentioned_or
 from os import environ
 import asyncpg
-import discord
-from discord.ext import commands
 import asyncio
 import logging
 from log import DiscordHandler

@@ -1,7 +1,6 @@
-from discord.ext.commands import Cog, command, UserConverter
-from discord import utils, Embed, Colour, Member, PermissionOverwrite, Forbidden, ChannelType, TextChannel, VoiceChannel
+from discord.ext.commands import Cog, command
+from discord import utils, Member, ChannelType, TextChannel, VoiceChannel
 from discord.ext import commands
-import re
 from typing import Union
 
 
