@@ -70,6 +70,7 @@ class Settings(Cog):
                 return
             elif role_name is None:
                 join_role = self.bot.servers[ctx.guild.id]["join_role_id"]
+                role = ctx.guild.get_role(join_role)
                 await ctx.send(f"The current autorole for new members is **{join_role.name}**")
                 return
 
