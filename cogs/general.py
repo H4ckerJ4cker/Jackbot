@@ -90,6 +90,7 @@ class General(Cog):
                 title="Message Edited",
             )
             message_embed.add_field(name="Channel", value=f"<#{before.channel.id}>")
+            message_embed.add_field(name="Message", value=f"[**Jump to message.**]({after.jump_url})", inline=False)
             message_embed.add_field(name="Message Before", value=before.content, inline=False)
             message_embed.add_field(name="Message After", value=after.content, inline=False)
             message_embed.add_field(name="Author", value=before.author.mention, inline=False)
