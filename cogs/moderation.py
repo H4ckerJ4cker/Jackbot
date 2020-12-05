@@ -4,25 +4,9 @@ from discord.ext import commands
 import re
 
 
-def check(ctx, member):
-    # Check if the user's 'best' role is higher than the member he is trying to ban
+def perms(ctx, member):
+    # Check if the user's 'best' role is higher than the member he is trying to mod.
     return ctx.author.top_role > member.top_role
-
-
-async def mute(ctx, user, reason):
-    role = utils.get(ctx.guild.roles, name="Muted")
-    if not role:  # checks if there is muted role
-        try:
-            muted = await ctx.guild.create_role(name="Muted", reason="To use for muting")
-            for channel in ctx.guild.channels:
-                await channel.set_permissions(muted, send_messages=False)
-        except Forbidden:
-            return await ctx.send("I have no permissions to make a muted role")
-        await user.add_roles(muted)
-        await ctx.send(f"{user.mention} has been sent to hell for {reason}")
-    else:
-        await user.add_roles(role)
-        await ctx.send(f"{user.mention} has been sent to hell for {reason}")
 
 
 class Moderation(Cog):
