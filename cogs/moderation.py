@@ -125,7 +125,7 @@ class Moderation(Cog):
     @commands.has_permissions(manage_guild=True)
     async def unmute(self, ctx, user: Member):
         """
-        Unmutes a member.
+        Unmutes a member. Does not affect users blocked from channels.
         """
         check = perms(ctx, user)
         if check is not True:
@@ -167,7 +167,7 @@ class Moderation(Cog):
     async def unblock(self, ctx, user: Member, channel: Union[TextChannel, VoiceChannel] = None, *, reason="No reason "
                                                                                                            "given"):
         """
-        Unblock a user, allowing them to speak in a channel again. Does not affect muted users
+        Unblock a user, allowing them to speak in a channel again. Does not affect muted users.
         """
         check = perms(ctx, user)
         if check is not True:
