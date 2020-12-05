@@ -127,6 +127,39 @@ class Settings(Cog):
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
+    @settings.command()
+    @commands.has_permissions(manage_guild=True)
+    async def logs(self, ctx, *, logs_channel: TextChannel = None):
+        """
+        Set the logging channel where logs should be sent. If no channel is specified the logging channel will be reset.
+        """
+        if ctx.guild is not None:
+            if logs_channel is None:
+                await self.bot.db.execute(
+                    "UPDATE guilds SET logging_channel_id = null WHERE guild_id = $1;",
+                    ctx.guild.id
+                )
+                self.bot.servers[ctx.guild.id]["logging_channel_id"] = None
+                await ctx.send("Logging disabled. I will no longer log any action. To enable run the command again with"
+                               " a channel as an argument.")
+                return
+
+            await self.bot.db.execute(
+                "INSERT INTO guilds(guild_id, logging_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
+                "logging_channel_id = $2",
+                ctx.guild.id,
+                logs_channel.id,
+            )
+            try:
+                self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
+            except KeyError:
+                self.bot.servers[ctx.guild.id] = {}
+                self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
+
+            await ctx.send(f"Logging channel set to <#{logs_channel.id}>")
+        else:
+            await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
+
 
 def setup(bot):
     bot.add_cog(Settings(bot))

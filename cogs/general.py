@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog, command, Context
-from discord import utils, Embed, Colour, Message, Forbidden
+from discord import utils, Embed, Colour, Message, NotFound
 from discord.ext import commands
 
 
@@ -37,6 +37,46 @@ class General(Cog):
         if join_role is not None:
             role = member.guild.get_role(join_role)
             await member.add_roles(role)
+
+    @Cog.listener()
+    async def on_message_delete(self, message):
+        log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
+        if log_channel_id is not None:
+            log_channel = self.bot.get_channel(log_channel_id)
+
+            if not message.attachments:
+                message_embed = Embed(
+                    color=Colour.red(),
+                    title="Message deleted",
+                )
+                message_embed.add_field(name="Channel", value=f"<#{message.channel.id}>")
+                message_embed.add_field(name="Message Content", value=message.content, inline=False)
+                message_embed.add_field(name="Author", value=message.author.mention, inline=False)
+                await log_channel.send(embed=message_embed)
+            else:
+                for attachment in message.attachments:
+                    if attachment.height is not None:
+                        image_embed = Embed(
+                            color=Colour.red(),
+                            title="Image deleted",
+                        )
+                        image_embed.set_image(url=attachment.proxy_url)
+                        image_embed.add_field(name="Channel", value=f"<#{message.channel.id}>")
+                        image_embed.add_field(name="Author", value=message.author.mention, inline=False)
+                        if message.content:
+                            image_embed.add_field(name="Message Content", value=message.content, inline=False)
+                        await log_channel.send(embed=image_embed)
+                    else:
+                        file_embed = Embed(
+                            color=Colour.red(),
+                            title="File deleted",
+                        )
+                        file_embed.add_field(name="Channel", value=f"<#{message.channel.id}>")
+                        file_embed.add_field(name="Author", value=message.author.mention, inline=False)
+                        if message.content:
+                            file_embed.add_field(name="Message Content", value=message.content, inline=False)
+                        file_embed.add_field(name="Filename", value=attachment.filename)
+                        await log_channel.send(embed=file_embed)
 
     @Cog.listener()
     async def on_guild_remove(self, guild):
@@ -129,66 +169,66 @@ class General(Cog):
 
         await ctx.send(embed=message.embeds[0] if message.embeds else embed)
 
-    @Cog.listener()
-    async def on_command_error(self, ctx, error):
-        error = getattr(error, "original", error)
-
-        if isinstance(error, commands.CommandNotFound):
-            return  # No need to log unfound commands anywhere or return feedback
-
-        if isinstance(error, commands.MissingRequiredArgument):
-            # Missing arguments are likely human error so do not need logging
-            parameter_name = error.param.name
-            return await ctx.send(
-                f"⚠️ The required argument **{parameter_name}** was missing."
-            )
-        elif isinstance(error, commands.CheckFailure):
-            return await ctx.send(
-                "\N{NO ENTRY SIGN} You do not have permission to use that command."
-            )
-        elif isinstance(error, commands.CommandOnCooldown):
-            retry_after = round(error.retry_after)
-            return await ctx.send(
-                f"\N{HOURGLASS} Command is on cooldown, try again after **{retry_after}** seconds."
-            )
-        elif isinstance(error, commands.MemberNotFound):
-            return await ctx.send("⚠️ Member not found, please try again.")
-
-        # All errors below this need reporting and so do not return
-
-        if isinstance(error, commands.ArgumentParsingError):
-            # Provide feedback & report error
-            await ctx.send(
-                "⚠️ An issue occurred while attempting to parse an argument."
-            )
-        elif isinstance(error, commands.BadArgument):
-            await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
-        elif isinstance(error, Forbidden):
-            await ctx.send(f"⚠️ I do not have the correct permissions to run that command for you.")
-        else:
-            await ctx.send(
-                "⚠️ An error occurred with that command, the error has been reported."
-            )
-
-        extra_context = {
-            "discord_info": {
-                "Channel": ctx.channel.mention,
-                "User": ctx.author.mention,
-                "Command": ctx.message.content,
-                "Server": ctx.guild.name,
-            }
-        }
-
-        if ctx.guild is not None:
-            # We are NOT in a DM
-            extra_context["discord_info"]["Message"] = (
-                f"[{ctx.message.id}](https://discordapp.com/channels/"
-                f"{ctx.guild.id}/{ctx.channel.id}/{ctx.message.id})"
-            )
-        else:
-            extra_context["discord_info"]["Message"] = f"{ctx.message.id} (DM)"
-
-        self.bot.log.exception(error, extra=extra_context)
+    # @Cog.listener()
+    # async def on_command_error(self, ctx, error):
+    #     error = getattr(error, "original", error)
+    #
+    #     if isinstance(error, commands.CommandNotFound):
+    #         return  # No need to log unfound commands anywhere or return feedback
+    #
+    #     if isinstance(error, commands.MissingRequiredArgument):
+    #         # Missing arguments are likely human error so do not need logging
+    #         parameter_name = error.param.name
+    #         return await ctx.send(
+    #             f"⚠️ The required argument **{parameter_name}** was missing."
+    #         )
+    #     elif isinstance(error, commands.CheckFailure):
+    #         return await ctx.send(
+    #             "\N{NO ENTRY SIGN} You do not have permission to use that command."
+    #         )
+    #     elif isinstance(error, commands.CommandOnCooldown):
+    #         retry_after = round(error.retry_after)
+    #         return await ctx.send(
+    #             f"\N{HOURGLASS} Command is on cooldown, try again after **{retry_after}** seconds."
+    #         )
+    #     elif isinstance(error, commands.MemberNotFound):
+    #         return await ctx.send("⚠️ Member not found, please try again.")
+    #
+    #     # All errors below this need reporting and so do not return
+    #
+    #     if isinstance(error, commands.ArgumentParsingError):
+    #         # Provide feedback & report error
+    #         await ctx.send(
+    #             "⚠️ An issue occurred while attempting to parse an argument."
+    #         )
+    #     elif isinstance(error, commands.BadArgument):
+    #         await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
+    #     elif isinstance(error, Forbidden):
+    #         await ctx.send(f"⚠️ I do not have the correct permissions to run that command for you.")
+    #     else:
+    #         await ctx.send(
+    #             "⚠️ An error occurred with that command, the error has been reported."
+    #         )
+    #
+    #     extra_context = {
+    #         "discord_info": {
+    #             "Channel": ctx.channel.mention,
+    #             "User": ctx.author.mention,
+    #             "Command": ctx.message.content,
+    #             "Server": ctx.guild.name,
+    #         }
+    #     }
+    #
+    #     if ctx.guild is not None:
+    #         # We are NOT in a DM
+    #         extra_context["discord_info"]["Message"] = (
+    #             f"[{ctx.message.id}](https://discordapp.com/channels/"
+    #             f"{ctx.guild.id}/{ctx.channel.id}/{ctx.message.id})"
+    #         )
+    #     else:
+    #         extra_context["discord_info"]["Message"] = f"{ctx.message.id} (DM)"
+    #
+    #     self.bot.log.exception(error, extra=extra_context)
 
 
 def setup(bot):

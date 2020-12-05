@@ -5,9 +5,11 @@ import asyncpg
 import asyncio
 import logging
 from log import DiscordHandler
+
 logger = logging.getLogger(__name__)
 intents = Intents.default()
 intents.members = True
+intents.messages = True
 
 
 async def get_prefix(bot, message):
@@ -31,7 +33,6 @@ async def run():
         db = await asyncpg.create_pool(**credentials)
         bot = Bot(command_prefix=get_prefix, activity=Game(name="@JackBot help"), intents=intents)
         bot.db = db
-
         async def get_prefixes():
             await bot.wait_until_ready()
 
@@ -53,6 +54,12 @@ async def run():
                 )
                 servers[guild.id]["join_role_id"] = join_role
 
+                logging_channel_id = await bot.db.fetchval(
+                    "SELECT logging_channel_id FROM guilds WHERE guild_id = $1",
+                    guild.id,
+                )
+                servers[guild.id]["logging_channel_id"] = logging_channel_id
+
                 poll_channel = await bot.db.fetchval(
                     "SELECT poll_channel_id FROM guilds WHERE guild_id = $1",
                     guild.id,
@@ -60,6 +67,7 @@ async def run():
                 servers[guild.id]["poll_channel_id"] = poll_channel
 
             bot.servers = servers
+
         logger.addHandler(DiscordHandler(bot))
         logger.setLevel(logging.INFO)
         bot.log = logger
@@ -81,6 +89,6 @@ async def run():
             await db.close()
         await bot.logout()
 
-    
+
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run())
