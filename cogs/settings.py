@@ -60,13 +60,17 @@ class Settings(Cog):
         Set the role members will get when they join the server. If you don't specify a role autorole will be reset.
         """
         if ctx.guild is not None:
-            if role_name is None:
+            if role_name == "reset":
                 await self.bot.db.execute(
                     "UPDATE guilds SET join_role_id = null WHERE guild_id = $1;",
                     ctx.guild.id
                 )
                 self.bot.servers[ctx.guild.id]["join_role_id"] = None
                 await ctx.send("Auto role disabled. To enable, run the command again with a role value.")
+                return
+            elif role_name is None:
+                join_role = self.bot.servers[ctx.guild.id]["join_role_id"]
+                await ctx.send(f"The current autorole for new members is **{join_role.name}**")
                 return
 
             role = utils.get(ctx.guild.roles, name=role_name)
