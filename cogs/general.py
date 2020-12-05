@@ -162,9 +162,6 @@ class General(Cog):
             )
         elif isinstance(error, commands.BadArgument):
             await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
-        elif isinstance(error, commands.MissingPermissions):
-            await ctx.send("⚠️ I don't have the correct permissions to run that command for you. Please ask in the "
-                           "support server if you require assistance")
         else:
             await ctx.send(
                 "⚠️ An error occurred with that command, the error has been reported."
