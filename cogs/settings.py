@@ -96,12 +96,12 @@ class Settings(Cog):
 
     @settings.command()
     @commands.has_permissions(manage_guild=True)
-    async def polls(self, ctx, *, poll_channel: TextChannel = None):
+    async def polls(self, ctx, *, poll_channel: TextChannel = None, reset=False):
         """
         Set the poll channel where polls should be sent. If no channel is specified the poll channel will be reset.
         """
         if ctx.guild is not None:
-            if poll_channel == "reset":
+            if reset == "reset":
                 await self.bot.db.execute(
                     "UPDATE guilds SET poll_channel_id = null WHERE guild_id = $1;",
                     ctx.guild.id
