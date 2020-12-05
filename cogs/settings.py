@@ -113,7 +113,12 @@ class Settings(Cog):
 
             if poll_channel is None:
                 poll_channel_id = self.bot.servers[ctx.guild.id]["poll_channel_id"]
-                await ctx.send(f"The current poll channel is set to <#{poll_channel_id}>")
+                if poll_channel_id is None:
+                    await ctx.send("There is no poll channel configured, If a user makes a poll it will be sent to "
+                                   "the channel they ran the command in.")
+                else:
+                    await ctx.send(f"The current poll channel is set to <#{poll_channel_id}>")
+                return
 
             await self.bot.db.execute(
                 "INSERT INTO guilds(guild_id, poll_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
