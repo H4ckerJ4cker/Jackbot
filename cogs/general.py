@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog, command, Context
-from discord import utils, Embed, Colour, Message
+from discord import utils, Embed, Colour, Message, Forbidden
 from discord.ext import commands
 
 
@@ -131,6 +131,7 @@ class General(Cog):
 
     @Cog.listener()
     async def on_command_error(self, ctx, error):
+        error = getattr(error, "original", error)
 
         if isinstance(error, commands.CommandNotFound):
             return  # No need to log unfound commands anywhere or return feedback
@@ -162,6 +163,8 @@ class General(Cog):
             )
         elif isinstance(error, commands.BadArgument):
             await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
+        elif isinstance(error, Forbidden):
+            await ctx.send(f"⚠️ I do not have the correct permissions to run that command for you.")
         else:
             await ctx.send(
                 "⚠️ An error occurred with that command, the error has been reported."
