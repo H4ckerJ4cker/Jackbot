@@ -65,6 +65,7 @@ class General(Cog):
                         image_embed.add_field(name="Author", value=message.author.mention, inline=False)
                         if message.content:
                             image_embed.add_field(name="Message Content", value=message.content, inline=False)
+                        image_embed.add_field(name="Filename", value=attachment.filename, inline=False)
                         await log_channel.send(embed=image_embed)
                     else:
                         file_embed = Embed(
@@ -75,7 +76,7 @@ class General(Cog):
                         file_embed.add_field(name="Author", value=message.author.mention, inline=False)
                         if message.content:
                             file_embed.add_field(name="Message Content", value=message.content, inline=False)
-                        file_embed.add_field(name="Filename", value=attachment.filename)
+                        file_embed.add_field(name="Filename", value=attachment.filename, inline=False)
                         await log_channel.send(embed=file_embed)
 
     @Cog.listener()
