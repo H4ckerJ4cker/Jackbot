@@ -140,7 +140,7 @@ class Settings(Cog):
                     ctx.guild.id
                 )
                 self.bot.servers[ctx.guild.id]["logging_channel_id"] = None
-                await ctx.send("Logging disabled. I will no longer log any action. To enable run the command again with"
+                await ctx.send("Logging disabled. I will not log any action. To enable run the command again with"
                                " a channel as an argument.")
                 return
 
