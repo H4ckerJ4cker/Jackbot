@@ -7,7 +7,7 @@ from discord.ext import commands
 import asyncio
 import logging
 from log import DiscordHandler
-# logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 intents = Intents.default()
 intents.members = True
 
