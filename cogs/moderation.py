@@ -113,13 +113,13 @@ class Moderation(Cog):
             return
         if muted_role is None:
             muted_role = await guild.create_role(name="Muted")
+        await user.add_roles(muted_role, reason=reason)
+        await ctx.send(f"**{user.display_name}** was muted for **{reason}**.")
         for channel in guild.channels:
             if channel.type == ChannelType.text:
                 await channel.set_permissions(muted_role, send_messages=False)
             if channel.type == ChannelType.voice:
                 await channel.set_permissions(muted_role, speak=False)
-        await user.add_roles(muted_role, reason=reason)
-        await ctx.send(f"**{user.display_name}** was muted for **{reason}**.")
 
     @command()
     @commands.has_permissions(manage_guild=True)
