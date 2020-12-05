@@ -130,63 +130,63 @@ class General(Cog):
 
         await ctx.send(embed=message.embeds[0] if message.embeds else embed)
 
-    @Cog.listener()
-    async def on_command_error(self, ctx, error):
-
-        if isinstance(error, commands.CommandNotFound):
-            return  # No need to log unfound commands anywhere or return feedback
-
-        if isinstance(error, commands.MissingRequiredArgument):
-            # Missing arguments are likely human error so do not need logging
-            parameter_name = error.param.name
-            return await ctx.send(
-                f"⚠️ The required argument **{parameter_name}** was missing."
-            )
-        elif isinstance(error, commands.CheckFailure):
-            return await ctx.send(
-                "\N{NO ENTRY SIGN} You do not have permission to use that command."
-            )
-        elif isinstance(error, commands.CommandOnCooldown):
-            retry_after = round(error.retry_after)
-            return await ctx.send(
-                f"\N{HOURGLASS} Command is on cooldown, try again after **{retry_after}** seconds."
-            )
-        elif isinstance(error, commands.MemberNotFound):
-            return await ctx.send("⚠️ Member not found, please try again.")
-
-        # All errors below this need reporting and so do not return
-
-        if isinstance(error, commands.ArgumentParsingError):
-            # Provide feedback & report error
-            await ctx.send(
-                "⚠️ An issue occurred while attempting to parse an argument."
-            )
-        elif isinstance(error, commands.BadArgument):
-            await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
-        else:
-            await ctx.send(
-                "⚠️ An error occurred with that command, the error has been reported."
-            )
-
-        extra_context = {
-            "discord_info": {
-                "Channel": ctx.channel.mention,
-                "User": ctx.author.mention,
-                "Command": ctx.message.content,
-                "Server": ctx.guild.name,
-            }
-        }
-
-        if ctx.guild is not None:
-            # We are NOT in a DM
-            extra_context["discord_info"]["Message"] = (
-                f"[{ctx.message.id}](https://discordapp.com/channels/"
-                f"{ctx.guild.id}/{ctx.channel.id}/{ctx.message.id})"
-            )
-        else:
-            extra_context["discord_info"]["Message"] = f"{ctx.message.id} (DM)"
-
-        self.bot.log.exception(error, extra=extra_context)
+    # @Cog.listener()
+    # async def on_command_error(self, ctx, error):
+    #
+    #     if isinstance(error, commands.CommandNotFound):
+    #         return  # No need to log unfound commands anywhere or return feedback
+    #
+    #     if isinstance(error, commands.MissingRequiredArgument):
+    #         # Missing arguments are likely human error so do not need logging
+    #         parameter_name = error.param.name
+    #         return await ctx.send(
+    #             f"⚠️ The required argument **{parameter_name}** was missing."
+    #         )
+    #     elif isinstance(error, commands.CheckFailure):
+    #         return await ctx.send(
+    #             "\N{NO ENTRY SIGN} You do not have permission to use that command."
+    #         )
+    #     elif isinstance(error, commands.CommandOnCooldown):
+    #         retry_after = round(error.retry_after)
+    #         return await ctx.send(
+    #             f"\N{HOURGLASS} Command is on cooldown, try again after **{retry_after}** seconds."
+    #         )
+    #     elif isinstance(error, commands.MemberNotFound):
+    #         return await ctx.send("⚠️ Member not found, please try again.")
+    #
+    #     # All errors below this need reporting and so do not return
+    #
+    #     if isinstance(error, commands.ArgumentParsingError):
+    #         # Provide feedback & report error
+    #         await ctx.send(
+    #             "⚠️ An issue occurred while attempting to parse an argument."
+    #         )
+    #     elif isinstance(error, commands.BadArgument):
+    #         await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
+    #     else:
+    #         await ctx.send(
+    #             "⚠️ An error occurred with that command, the error has been reported."
+    #         )
+    #
+    #     extra_context = {
+    #         "discord_info": {
+    #             "Channel": ctx.channel.mention,
+    #             "User": ctx.author.mention,
+    #             "Command": ctx.message.content,
+    #             "Server": ctx.guild.name,
+    #         }
+    #     }
+    #
+    #     if ctx.guild is not None:
+    #         # We are NOT in a DM
+    #         extra_context["discord_info"]["Message"] = (
+    #             f"[{ctx.message.id}](https://discordapp.com/channels/"
+    #             f"{ctx.guild.id}/{ctx.channel.id}/{ctx.message.id})"
+    #         )
+    #     else:
+    #         extra_context["discord_info"]["Message"] = f"{ctx.message.id} (DM)"
+    #
+    #     self.bot.log.exception(error, extra=extra_context)
 
 
 def setup(bot):

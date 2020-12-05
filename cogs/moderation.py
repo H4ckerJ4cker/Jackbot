@@ -1,5 +1,5 @@
-from discord.ext.commands import Cog, command, Context
-from discord import utils, Embed, Colour, Member, PermissionOverwrite, Forbidden, ChannelType
+from discord.ext.commands import Cog, command, UserConverter
+from discord import utils, Embed, Colour, Member, PermissionOverwrite, Forbidden, ChannelType, errors
 from discord.ext import commands
 import re
 
@@ -49,6 +49,53 @@ class Moderation(Cog):
             await member.edit(mute=False)
 
     @command()
+    @commands.has_permissions(kick_members=True)
+    async def kick(self, ctx, user: Member, *, reason="No reason given"):
+        """
+        Kick a member from the server.
+        """
+        check = perms(ctx, user)
+        if check is not True:
+            await ctx.send("You can't moderate a member with a higher or equal role than you!")
+            return
+        await user.kick(reason=reason)
+        await ctx.send(f"**{user.display_name}** was kicked for **{reason}**.")
+
+    @command()
+    @commands.has_permissions(ban_members=True)
+    async def ban(self, ctx, user: Member, *, reason="No reason given"):
+        """
+        Bans a member from the server.
+        """
+        check = perms(ctx, user)
+        if check is not True:
+            await ctx.send("You can't moderate a member with a higher or equal role than you!")
+            return
+        await user.ban(reason=reason)
+        await ctx.send(f"**{user.display_name}** was banned for **{reason}**.")
+
+    @command()
+    @commands.has_permissions(ban_members=True)
+    async def unban(self, ctx, full_username, *, reason="No reason given"):
+        """
+        Unbans a member from the server. Full username with discriminator must be used.
+        """
+        banned_users = await ctx.guild.bans()
+        member_name, member_discriminator = full_username.split('#')
+        for ban_entry in banned_users:
+            user = ban_entry.user
+
+            if (user.name, user.discriminator) == (member_name, member_discriminator):
+                await ctx.guild.unban(user)
+                await ctx.send(f"**{user.mention}** was unbanned for **{reason}**.")
+                is_banned = True
+            else:
+                is_banned = False
+
+        if not is_banned:
+            await ctx.send(f"**{full_username}** is not banned.")
+
+    @command()
     @commands.has_permissions(manage_guild=True)
     async def mute(self, ctx, user: Member, *, reason="No reason given"):
         """
@@ -56,7 +103,7 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher role than you!")
+            await ctx.send("You can't moderate a member with a higher or equal role than you!")
             return
         guild = ctx.guild
         muted_role = utils.get(guild.roles, name="Muted")
@@ -71,7 +118,7 @@ class Moderation(Cog):
             if channel.type == ChannelType.voice:
                 await channel.set_permissions(muted_role, speak=False)
         await user.add_roles(muted_role, reason=reason)
-        await ctx.send(f"**{user.display_name}** was muted for **{reason}**")
+        await ctx.send(f"**{user.display_name}** was muted for **{reason}**.")
 
     @command()
     @commands.has_permissions(manage_guild=True)
@@ -81,12 +128,12 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher role than you!")
+            await ctx.send("You can't moderate a member with a higher or equal role than you!")
             return
         muted_role = utils.get(user.roles, name="Muted")
         if muted_role is not None:
             await user.remove_roles(muted_role, reason="Unmuted")
-            await ctx.send(f"**{user.display_name}** was unmuted.")
+            await ctx.send(f"**{user.display_name}** has been unmuted.")
         else:
             await ctx.send(f"**{user.display_name}** is not muted.")
 
