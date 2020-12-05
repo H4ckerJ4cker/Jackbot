@@ -111,7 +111,7 @@ class Settings(Cog):
                                "the command in.")
                 return
 
-            if poll_channel is None:
+            elif poll_channel is None:
                 poll_channel_id = self.bot.servers[ctx.guild.id]["poll_channel_id"]
                 if poll_channel_id is None:
                     await ctx.send("There is no poll channel configured, If a user makes a poll it will be sent to "
