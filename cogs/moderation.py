@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog, command, Context
-from discord import utils, Embed, Colour, Member, PermissionOverwrite, Forbidden
+from discord import utils, Embed, Colour, Member, PermissionOverwrite, Forbidden, ChannelType
 from discord.ext import commands
 import re
 
@@ -47,6 +47,48 @@ class Moderation(Cog):
         vc = ctx.author.voice.channel
         for member in vc.members:
             await member.edit(mute=False)
+
+    @command()
+    @commands.has_permissions(manage_guild=True)
+    async def mute(self, ctx, user: Member, *, reason="No reason given"):
+        """
+        Mutes a member.
+        """
+        check = perms(ctx, user)
+        if check is not True:
+            await ctx.send("You can't moderate a member with a higher role than you!")
+            return
+        guild = ctx.guild
+        muted_role = utils.get(guild.roles, name="Muted")
+        if muted_role in user.roles:
+            await ctx.send(f"**{user.display_name}** is already muted.")
+            return
+        if muted_role is None:
+            muted_role = await guild.create_role(name="Muted")
+        for channel in guild.channels:
+            if channel.type == ChannelType.text:
+                await channel.set_permissions(muted_role, send_messages=False)
+            if channel.type == ChannelType.voice:
+                await channel.set_permissions(muted_role, speak=False)
+        await user.add_roles(muted_role, reason=reason)
+        await ctx.send(f"**{user.display_name}** was muted for **{reason}**")
+
+    @command()
+    @commands.has_permissions(manage_guild=True)
+    async def unmute(self, ctx, user: Member):
+        """
+        Unmutes a member.
+        """
+        check = perms(ctx, user)
+        if check is not True:
+            await ctx.send("You can't moderate a member with a higher role than you!")
+            return
+        muted_role = utils.get(user.roles, name="Muted")
+        if muted_role is not None:
+            await user.remove_roles(muted_role, reason="Unmuted")
+            await ctx.send(f"**{user.display_name}** was unmuted.")
+        else:
+            await ctx.send(f"**{user.display_name}** is not muted.")
 
 
 def setup(bot):

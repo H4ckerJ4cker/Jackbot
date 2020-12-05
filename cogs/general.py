@@ -151,6 +151,8 @@ class General(Cog):
             return await ctx.send(
                 f"\N{HOURGLASS} Command is on cooldown, try again after **{retry_after}** seconds."
             )
+        elif isinstance(error, commands.MemberNotFound):
+            return await ctx.send("⚠️ Member not found, please try again.")
 
         # All errors below this need reporting and so do not return
 
