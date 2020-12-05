@@ -57,7 +57,7 @@ class Settings(Cog):
     @commands.has_permissions(manage_guild=True)
     async def autorole(self, ctx, *, role_name=None):
         """
-        Set the role members will get when they join the server. If you don't specify a role autorole will be reset.
+        Set the role members will get when they join the server. To turn off autorole type ``!settings autorole reset``
         """
         if ctx.guild is not None:
             if role_name == "reset":
@@ -101,7 +101,7 @@ class Settings(Cog):
         Set the poll channel where polls should be sent. If no channel is specified the poll channel will be reset.
         """
         if ctx.guild is not None:
-            if poll_channel is None:
+            if poll_channel == "reset":
                 await self.bot.db.execute(
                     "UPDATE guilds SET poll_channel_id = null WHERE guild_id = $1;",
                     ctx.guild.id
@@ -110,6 +110,10 @@ class Settings(Cog):
                 await ctx.send("Poll channel reset. If a user makes a poll it will be sent to the channel they ran "
                                "the command in.")
                 return
+
+            if poll_channel is None:
+                poll_channel_id = self.bot.servers[ctx.guild.id]["poll_channel_id"]
+                await ctx.send(f"The current poll channel is set to <#{poll_channel_id}>")
 
             await self.bot.db.execute(
                 "INSERT INTO guilds(guild_id, poll_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
@@ -123,7 +127,7 @@ class Settings(Cog):
                 self.bot.servers[ctx.guild.id] = {}
                 self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
 
-            await ctx.send(f"Poll channel set to **{poll_channel.name}**")
+            await ctx.send(f"Poll channel set to <#{poll_channel.id}>")
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
