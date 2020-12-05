@@ -86,13 +86,15 @@ class General(Cog):
             log_channel = self.bot.get_channel(log_channel_id)
 
             message_embed = Embed(
-                color=Colour.red(),
+                color=Colour.orange(),
                 title="Message Edited",
             )
             message_embed.add_field(name="Channel", value=f"<#{before.channel.id}>")
             message_embed.add_field(name="Message", value=f"[**Jump to message.**]({after.jump_url})", inline=False)
-            message_embed.add_field(name="Message Before", value=before.content, inline=False)
-            message_embed.add_field(name="Message After", value=after.content, inline=False)
+            if before.content:
+                message_embed.add_field(name="Message Before", value=before.content, inline=False)
+            if after.content:
+                message_embed.add_field(name="Message After", value=after.content, inline=False)
             message_embed.add_field(name="Author", value=before.author.mention, inline=False)
             await log_channel.send(embed=message_embed)
 
