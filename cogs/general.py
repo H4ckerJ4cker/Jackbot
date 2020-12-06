@@ -39,13 +39,14 @@ class General(Cog):
     @Cog.listener()
     async def on_guild_join(self, guild):
         general = utils.find(lambda x: x.name == 'general', guild.text_channels)
-        await general.send("Hi I'm JackBot, here for all your discord needs :). My default prefix is **!** but you "
-                           "can change it with ``!settings prefix [new_prefix]`` and you can always summon me with a "
-                           "mention. I don't have many commands yet but if you need a specific command feel free to "
-                           "send a command suggestion in the support server. To see all my available "
-                           "commands you can run ``!help`` and I will send you a DM. To find out how to customise me "
-                           "for your server run ``!settings`` for a list of settings you can change. If you need any "
-                           "help feel free to ask in my support server. https://discord.gg/t58T4mU9v9")
+        await general.send("Hi I'm JackBot, here for all your small time discord needs. My default prefix is **!** "
+                           "but you can change it with ``!settings prefix [new_prefix]`` and you can always summon me "
+                           "with a mention. I've got you covered for all your basic moderation and server misc but if "
+                           "you need specific feature feel free to send a message to the support server. To see all my "
+                           "available commands you can run ``!help`` and I will send you a DM. To find out how to "
+                           "customise me for your server run ``!settings`` for a list of settings you can change. If "
+                           "you need any help feel free to ask in my support server. Thank you for choosing JackBot "
+                           "your no fuss bot for small servers :) https://discord.gg/t58T4mU9v9")
         jack = self.bot.get_user(557106447771500545)
         await jack.send(f"I just joined **{guild.name}**")
 
