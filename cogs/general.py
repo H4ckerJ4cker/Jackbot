@@ -60,7 +60,7 @@ class General(Cog):
     async def on_message_delete(self, message):
         message_context = await self.bot.get_context(message)
         log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
-        if log_channel_id is not None and message_context.valid is not True and message.auhour.id != self.bot.user.id:
+        if log_channel_id is not None and message_context.valid is not True and message.author.id != self.bot.user.id:
             log_channel = self.bot.get_channel(log_channel_id)
 
             if not message.attachments:
