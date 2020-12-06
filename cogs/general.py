@@ -66,7 +66,9 @@ class General(Cog):
     async def on_message_delete(self, message):
         message_context = await self.bot.get_context(message)
         log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
-        if log_channel_id is not None and message_context.valid is not True and message.author.id != self.bot.user.id:
+        if log_channel_id is None or message_context.valid is True or message.author.bot is True:
+            return
+        else:
             log_channel = self.bot.get_channel(log_channel_id)
 
             if not message.attachments:
@@ -104,25 +106,25 @@ class General(Cog):
                         file_embed.add_field(name="Filename", value=attachment.filename, inline=False)
                         await log_channel.send(embed=file_embed)
 
-    @Cog.listener()
-    async def on_message_edit(self, before, after):
-        log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
-        if log_channel_id is not None:
-            log_channel = self.bot.get_channel(log_channel_id)
-            if before.author.id != self.bot.user.id:
+@Cog.listener()
+async def on_message_edit(self, before, after):
+    log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
+    if log_channel_id is not None:
+        log_channel = self.bot.get_channel(log_channel_id)
+        if before.author.id != self.bot.user.id:
 
-                message_embed = Embed(
-                    color=Colour.orange(),
-                    title="Message Edited",
-                )
-                message_embed.add_field(name="Channel", value=f"<#{before.channel.id}>")
-                message_embed.add_field(name="Message", value=f"[**Jump to message.**]({after.jump_url})", inline=False)
-                if before.content:
-                    message_embed.add_field(name="Message Before", value=before.content, inline=False)
-                if after.content:
-                    message_embed.add_field(name="Message After", value=after.content, inline=False)
-                message_embed.add_field(name="Author", value=before.author.mention, inline=False)
-                await log_channel.send(embed=message_embed)
+            message_embed = Embed(
+                color=Colour.orange(),
+                title="Message Edited",
+            )
+            message_embed.add_field(name="Channel", value=f"<#{before.channel.id}>")
+            message_embed.add_field(name="Message", value=f"[**Jump to message.**]({after.jump_url})", inline=False)
+            if before.content:
+                message_embed.add_field(name="Message Before", value=before.content, inline=False)
+            if after.content:
+                message_embed.add_field(name="Message After", value=after.content, inline=False)
+            message_embed.add_field(name="Author", value=before.author.mention, inline=False)
+            await log_channel.send(embed=message_embed)
 
     @Cog.listener()
     async def on_guild_remove(self, guild):
