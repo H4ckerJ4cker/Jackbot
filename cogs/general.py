@@ -65,12 +65,10 @@ class General(Cog):
     @Cog.listener()
     async def on_message_delete(self, message):
         message_context = await self.bot.get_context(message)
+        if message.guild is None:
+            return
         log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
-        if (
-                log_channel_id is None or message_context.valid is True or message.author.bot is True
-                or message.guild is None
-        ):
-
+        if log_channel_id is None or message_context.valid is True or message.author.bot is True:
             return
         else:
             log_channel = self.bot.get_channel(log_channel_id)
@@ -112,8 +110,10 @@ class General(Cog):
 
     @Cog.listener()
     async def on_message_edit(self, before, after):
+        if before.guild is None:
+            return
         log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
-        if log_channel_id is None or before.author.bot is True or before.guild is None:
+        if log_channel_id is None or before.author.bot is True:
             return
         else:
             log_channel = self.bot.get_channel(log_channel_id)
