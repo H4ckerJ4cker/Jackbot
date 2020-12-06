@@ -60,8 +60,12 @@ class EmbeddedHelpCommand(commands.HelpCommand):
                 description=command.help
             )
             embed.add_field(name="Usage", value=f"``{self.clean_prefix}{command.name} {command.signature}``", inline=False)
+            if command.root_parent is None:
+                parent = ""
+            else:
+                parent = command.root_parent.name
             if command.aliases:
-                embed.add_field(name="Aliases", value=", ".join(f'``{self.clean_prefix}{alias}``'
+                embed.add_field(name="Aliases", value=", ".join(f'``{self.clean_prefix}{parent} {alias}``'
                                                                 for alias in command.aliases), inline=False)
 
             await ctx.send(embed=embed)
