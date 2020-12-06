@@ -27,7 +27,7 @@ class General(Cog):
                            "send a command suggestion in the support server. To see all my available "
                            "commands you can run ``!help`` and I will send you a DM. To find out how to customise me "
                            "for your server run ``!settings`` for a list of settings you can change. If you need any "
-                           "help feel free to ask in my support server https://discord.gg/GZsrHAyM2R.")
+                           "help feel free to ask in my support server. https://discord.gg/GZsrHAyM2R")
         jack = self.bot.get_user(557106447771500545)
         await jack.send(f"I just joined **{guild.name}**")
 
