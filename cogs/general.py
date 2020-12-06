@@ -1,6 +1,7 @@
 from discord.ext.commands import Cog, command, Context
-from discord import utils, Embed, Colour, Message, NotFound
-from discord.ext import commands
+from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType
+from discord.ext import commands, tasks
+import random
 
 
 class General(Cog):
@@ -10,6 +11,10 @@ class General(Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.status.start()
+
+    def cog_unload(self):
+        self.status.cancel()
 
     @Cog.listener()
     async def on_ready(self):
@@ -17,6 +22,19 @@ class General(Cog):
         print(self.bot.user.name)
         print(self.bot.user.id)
         print("------")
+
+    @tasks.loop(seconds=125)
+    async def status(self):
+
+        activity_guilds = Activity(name=f'{len(self.bot.guilds)} servers', type=ActivityType.watching)
+        activity_help = Activity(name='@Jackbot help', type=ActivityType.playing)
+        activity_listening = Activity(name='to your suggestions', type=ActivityType.listening)
+        activity_list = [activity_help, activity_guilds, activity_listening]
+        await self.bot.change_presence(activity=random.choice(activity_list))
+
+    @status.before_loop
+    async def before_printer(self):
+        await self.bot.wait_until_ready()
 
     @Cog.listener()
     async def on_guild_join(self, guild):

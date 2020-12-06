@@ -31,7 +31,7 @@ async def run():
                    "database": environ.get("PGDATABASE"), "host": environ.get("PGHOST")}
     if not environ.get("LOCAL_DEBUGGING"):
         db = await asyncpg.create_pool(**credentials)
-        bot = Bot(command_prefix=get_prefix, activity=Game(name="@JackBot help"), intents=intents)
+        bot = Bot(command_prefix=get_prefix, intents=intents)
         bot.db = db
         async def get_prefixes():
             await bot.wait_until_ready()
