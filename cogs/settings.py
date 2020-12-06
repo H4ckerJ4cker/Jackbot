@@ -31,9 +31,9 @@ class Settings(Cog):
 
         await ctx.send(embed=embed)
 
-    @settings.command()
+    @settings.command(aliases=['prefix', 'newprefix'])
     @commands.has_permissions(manage_guild=True)
-    async def prefix(self, ctx, *, new_prefix):
+    async def setprefix(self, ctx, *, new_prefix):
         """
         Set the prefix of the bot.
         """
@@ -53,9 +53,9 @@ class Settings(Cog):
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
-    @settings.command()
+    @settings.command(aliases=['autorole', 'joinrole'])
     @commands.has_permissions(manage_guild=True)
-    async def autorole(self, ctx, *, role_name=None):
+    async def setautorole(self, ctx, *, role_name=None):
         """
         Set the role members will get when they join the server. To turn off autorole type ``!settings autorole reset``
         """
@@ -94,9 +94,9 @@ class Settings(Cog):
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
-    @settings.command()
+    @settings.command(aliases=['polls', 'pollschannel'])
     @commands.has_permissions(manage_guild=True)
-    async def polls(self, ctx, *, poll_channel: TextChannel = None):
+    async def setpollchannel(self, ctx, *, poll_channel: TextChannel = None):
         """
         Set the poll channel where polls should be sent. If no channel is specified the poll channel will be reset.
         """
@@ -127,9 +127,9 @@ class Settings(Cog):
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
-    @settings.command()
+    @settings.command(aliases=['logs', 'setlogs', 'setloggingchannel'])
     @commands.has_permissions(manage_guild=True)
-    async def logs(self, ctx, *, logs_channel: TextChannel = None):
+    async def setlogging(self, ctx, *, logs_channel: TextChannel = None):
         """
         Set the logging channel where logs should be sent. If no channel is specified the logging channel will be reset.
         """
