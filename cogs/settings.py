@@ -33,23 +33,36 @@ class Settings(Cog):
 
     @settings.command(aliases=['prefix', 'newprefix'])
     @commands.has_permissions(manage_guild=True)
-    async def setprefix(self, ctx, *, new_prefix):
+    async def setprefix(self, ctx, *, new_prefix=None):
         """
         Set the prefix of the bot.
         """
         if ctx.guild is not None:
-            await self.bot.db.execute(
-                "INSERT INTO guilds(guild_id, prefix) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
-                ctx.guild.id,
-                new_prefix,
-            )
-            try:
-                self.bot.servers[ctx.guild.id]["prefix"] = new_prefix
-            except KeyError:
-                # server is not in dict.
-                self.bot.servers[ctx.guild.id] = {}
-                self.bot.servers[ctx.guild.id]["prefix"] = new_prefix
-            await ctx.send(f"Prefix set to **{new_prefix}**.")
+            if new_prefix is None:
+                try:
+                    dbprefix = self.bot.servers[ctx.guild.id]["prefix"]
+                except KeyError:
+                    self.bot.servers[ctx.guild.id] = {}
+                    dbprefix = self.bot.servers[ctx.guild.id]["prefix"]
+                if dbprefix is None:
+                    prefix = '!'
+                else:
+                    prefix = dbprefix
+
+                await ctx.send(f"The current prefix is **{prefix}**.")
+            else:
+                await self.bot.db.execute(
+                    "INSERT INTO guilds(guild_id, prefix) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
+                    ctx.guild.id,
+                    new_prefix,
+                )
+                try:
+                    self.bot.servers[ctx.guild.id]["prefix"] = new_prefix
+                except KeyError:
+                    # server is not in dict.
+                    self.bot.servers[ctx.guild.id] = {}
+                    self.bot.servers[ctx.guild.id]["prefix"] = new_prefix
+                await ctx.send(f"Prefix set to **{new_prefix}**.")
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
@@ -71,7 +84,8 @@ class Settings(Cog):
             elif role_name is None:
                 join_role = self.bot.servers[ctx.guild.id]["join_role_id"]
                 if join_role is None:
-                    await ctx.send(f"No autorole configured to add one type. ``@JackBot settings setautorole role_name``")
+                    await ctx.send(f"No autorole configured to add one type. ``@JackBot settings setautorole ["
+                                   f"role_name]``")
                     return
                 role = ctx.guild.get_role(join_role)
                 await ctx.send(f"The current autorole for new members is **{role.name}**")
@@ -110,8 +124,9 @@ class Settings(Cog):
                     ctx.guild.id
                 )
                 self.bot.servers[ctx.guild.id]["poll_channel_id"] = None
-                await ctx.send("Poll channel reset. If a user makes a poll it will be sent to the channel they ran "
-                               "the command in.")
+                await ctx.send("Poll channel disabled. If a user makes a poll it will be sent to the channel they ran "
+                               "the command in. To add a poll channel type ``@JackBot settings setpollchannel ["
+                               "channel]`` ")
                 return
 
             await self.bot.db.execute(
@@ -144,7 +159,7 @@ class Settings(Cog):
                 )
                 self.bot.servers[ctx.guild.id]["logging_channel_id"] = None
                 await ctx.send("Logging disabled. I will not log any action. To enable run the command again with"
-                               " a channel as an argument.")
+                               " a channel as an argument. ``@JackBot settings setlogging [channel]``")
                 return
 
             await self.bot.db.execute(
