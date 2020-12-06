@@ -16,6 +16,7 @@ async def get_prefix(bot, message):
     try:
         if message.guild is not None:
             prefix = bot.servers[message.guild.id]["prefix"]
+            print(prefix)
             if prefix is None:
                 prefix = '!'
         else:
