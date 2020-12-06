@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog, command, Context
-from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType
+from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden
 from discord.ext import commands, tasks
 import random
 
