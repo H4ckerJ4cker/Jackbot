@@ -54,6 +54,11 @@ class Fun(Cog):
         await poll.add_reaction("<:neutral:779124664660131912>")
         await poll.add_reaction("<:no:779124611643080734>")
 
+    @commands.command(brief="owoify your messages!")
+    async def owofier(self, ctx, *, text):
+        var = owo.text_to_owo(text)
+        await ctx.message.delete()
+        await ctx.send(var)
 
 def setup(bot):
     bot.add_cog(Fun(bot))
