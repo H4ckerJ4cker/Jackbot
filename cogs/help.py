@@ -53,21 +53,21 @@ class EmbeddedHelpCommand(commands.HelpCommand):
 
     async def send_command_help(self, command):
         ctx = self.context
+        if command.root_parent is None:
+            parent = ""
+        else:
+            parent = command.root_parent.name + " "
         if command.hidden is not True:
             embed = Embed(
                 color=Colour.blue(),
-                title=f"``{self.clean_prefix}{command.name}``",
+                title=f"``{self.clean_prefix}{parent}{command.name}``",
                 description=command.help
             )
-            embed.add_field(name="Usage", value=f"``{self.clean_prefix}{command.name} {command.signature}``", inline=False)
-            if command.root_parent is None:
-                parent = ""
-            else:
-                parent = command.root_parent.name
-            if command.aliases:
-                embed.add_field(name="Aliases", value=", ".join(f'``{self.clean_prefix}{parent} {alias}``'
-                                                                for alias in command.aliases), inline=False)
+            embed.add_field(name="Usage", value=f"``{self.clean_prefix}{parent}{command.name} {command.signature}``", inline=False)
 
+            if command.aliases:
+                embed.add_field(name="Aliases", value=", ".join(f'``{self.clean_prefix}{parent}{alias}``'
+                                                                for alias in command.aliases), inline=False)
             await ctx.send(embed=embed)
 
 
