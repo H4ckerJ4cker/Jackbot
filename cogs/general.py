@@ -84,7 +84,7 @@ class General(Cog):
         log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
         if log_channel_id is not None:
             log_channel = self.bot.get_channel(log_channel_id)
-            if before.author.id != self.bot.id:
+            if before.author.id != self.bot.user.id:
 
                 message_embed = Embed(
                     color=Colour.orange(),
