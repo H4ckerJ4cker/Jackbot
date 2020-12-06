@@ -106,11 +106,12 @@ class General(Cog):
                         file_embed.add_field(name="Filename", value=attachment.filename, inline=False)
                         await log_channel.send(embed=file_embed)
 
-
     @Cog.listener()
     async def on_message_edit(self, before, after):
         log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
-        if log_channel_id is not None:
+        if log_channel_id is None or before.author.bot is True:
+            return
+        else:
             log_channel = self.bot.get_channel(log_channel_id)
             if before.author.id != self.bot.user.id:
 
