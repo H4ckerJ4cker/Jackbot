@@ -58,7 +58,7 @@ class General(Cog):
 
     @Cog.listener()
     async def on_message_delete(self, message):
-        message_context = self.bot.get_context(message)
+        message_context = await self.bot.get_context(message)
         if await message_context.valid is not True:
             log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
             if log_channel_id is not None:
