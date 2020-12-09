@@ -139,12 +139,12 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(manage_guild=True)
-    async def block(self, ctx, user: Member, channel: Union[TextChannel, VoiceChannel] = None, *,
-                    reason="No reason given"):
+    async def block(self, ctx, user: Member, channel: Union[TextChannel, VoiceChannel] = None):
         """
         Block a member from speaking in a channel.
         If no channel is specified the user will be blocked in the channel the command was initiated in.
         """
+        reason = "User blocked from channel"
         check = perms(ctx, user)
         if check is not True:
             await ctx.send("You can't moderate a member with a higher or equal role to you!")
@@ -153,18 +153,15 @@ class Moderation(Cog):
             channel = ctx.channel
         if channel.type == ChannelType.text:
             await channel.set_permissions(user, send_messages=False, reason=reason)
-            await ctx.send(f"**{user.display_name}** can no longer send messages in the channel {channel.mention}. "
-                           f"Reason: **{reason}**")
+            await ctx.send(f"**{user.display_name}** can no longer send messages in the channel {channel.mention}.")
         elif channel.type == ChannelType.voice:
             await channel.set_permissions(user, speak=False, reason=reason)
             await ctx.send(
-                f"**{user.display_name}** can no longer speak in the voice channel **{channel.name}**. Reason"
-                f": **{reason}**")
+                f"**{user.display_name}** can no longer speak in the voice channel **{channel.name}**.")
 
     @command()
     @commands.has_permissions(manage_guild=True)
-    async def unblock(self, ctx, user: Member, channel: Union[TextChannel, VoiceChannel] = None, *, reason="No reason "
-                                                                                                           "given"):
+    async def unblock(self, ctx, user: Member, channel: Union[TextChannel, VoiceChannel] = None):
         """
         Unblock a user, allowing them to speak in a channel again. Does not affect muted users.
         """
@@ -174,13 +171,11 @@ class Moderation(Cog):
             return
         if channel is None:
             channel = ctx.channel
-        await channel.set_permissions(user, overwrite=None, reason=reason)
+        await channel.set_permissions(user, overwrite=None, reason="User unblocked from channel")
         if channel.type == ChannelType.text:
-            await ctx.send(f"**{user.display_name}** can now send messages in the channel {channel.mention} again. "
-                           f"Reason: **{reason}**")
+            await ctx.send(f"**{user.display_name}** can now send messages in the channel {channel.mention} again.")
         elif channel.type == ChannelType.voice:
-            await ctx.send(f"**{user.display_name}** can now speak in the voice channel **{channel.name}** again. "
-                           f"Reason: **{reason}**")
+            await ctx.send(f"**{user.display_name}** can now speak in the voice channel **{channel.name}** again.")
 
 
 def setup(bot):
