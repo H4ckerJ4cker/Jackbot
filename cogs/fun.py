@@ -20,16 +20,6 @@ class Fun(Cog):
         await ctx.message.delete()
         await ctx.send(text)
 
-    @command(hidden=True)
-    async def setcode(self, ctx, *, code):
-        """
-        Sets the among us code.
-        """
-        channel = self.bot.get_channel(771452964325687296)
-        await channel.edit(name=f"CODE: {code}")
-        await ctx.send(f"AMONG US CODE: {code}")
-        await ctx.message.delete()
-
     @command()
     async def poll(self, ctx: Context, *, poll_question: str):
         """
