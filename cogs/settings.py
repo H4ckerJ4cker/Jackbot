@@ -49,7 +49,8 @@ class Settings(Cog):
                 else:
                     prefix = dbprefix
 
-                await ctx.send(f"The current prefix is **{prefix}**.")
+                await ctx.send(f"The current prefix is **{prefix}**. To change it type ``@JackBot settings setprefix "
+                               f"[new prefix]``")
             else:
                 await self.bot.db.execute(
                     "INSERT INTO guilds(guild_id, prefix) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
