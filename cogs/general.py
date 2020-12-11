@@ -186,9 +186,8 @@ class General(Cog):
             )
         elif isinstance(error, commands.BadArgument):
             await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
-        elif isinstance(error, commands.BotMissingPermissions):
-            missing = error.missing_perms
-            await ctx.send(f"⚠️ I do not have the correct permissions: **{' '.join(str(x) for x in missing)}** to run that command for you.")
+        elif isinstance(error, Forbidden):
+            await ctx.send(f"⚠️ I do not have the correct permissions to run that command for you.")
         else:
             await ctx.send(
                 "⚠️ An error occurred with that command, the error has been reported."
