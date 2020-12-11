@@ -164,9 +164,10 @@ class General(Cog):
             return await ctx.send(
                 f"⚠️ The required argument **{parameter_name}** was missing."
             )
-        elif isinstance(error, commands.CheckFailure):
+        elif isinstance(error, commands.MissingPermissions):
+            missing = error.missing_perms
             return await ctx.send(
-                "\N{NO ENTRY SIGN} You do not have permission to use that command."
+                f"\N{NO ENTRY SIGN} You are missing the permission **{' '.join(str(x) for x in missing)}**"
             )
         elif isinstance(error, commands.CommandOnCooldown):
             retry_after = round(error.retry_after)
@@ -185,8 +186,9 @@ class General(Cog):
             )
         elif isinstance(error, commands.BadArgument):
             await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
-        elif isinstance(error, Forbidden):
-            await ctx.send(f"⚠️ I do not have the correct permissions to run that command for you.")
+        elif isinstance(error, commands.BotMissingPermissions):
+            missing = error.missing_perms
+            await ctx.send(f"⚠️ I do not have the correct permissions: **{' '.join(str(x) for x in missing)}** to run that command for you.")
         else:
             await ctx.send(
                 "⚠️ An error occurred with that command, the error has been reported."
