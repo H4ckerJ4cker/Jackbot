@@ -47,9 +47,27 @@ class Moderation(Cog):
         Mutes everyone in the voice channel you are in. Useful for playing Among Us. (Requires Among Us Overlord role.)
         """
         await ctx.message.delete()
-        vc = ctx.author.voice.channel
+        try:
+            vc = ctx.author.voice.channel
+        except AttributeError:
+            ctx.channel.send("⚠️ You need to be in a voice channel to use that command!")
+            return
         for member in vc.members:
             await member.edit(mute=True)
+
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="Voice Channel Muted",
+                description="All the members in a voice channel were muted."
+            )
+            embed.add_field(name="Voice Channel", value=f"{vc.name}")
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
 
     @command(aliases=['u'])
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))
@@ -59,9 +77,28 @@ class Moderation(Cog):
         role.) 
         """
         await ctx.message.delete()
-        vc = ctx.author.voice.channel
+        try:
+
+            vc = ctx.author.voice.channel
+        except AttributeError:
+            ctx.channel.send("⚠️ You need to be in a voice channel to use that command!")
+            return
         for member in vc.members:
             await member.edit(mute=False)
+
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="Voice Channel Unmuted",
+                description="All the members in a voice channel were unmuted."
+            )
+            embed.add_field(name="Voice Channel", value=f"{vc.name}")
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
 
     @command()
     @commands.has_permissions(kick_members=True)
@@ -76,6 +113,21 @@ class Moderation(Cog):
         await user.kick(reason=reason)
         await ctx.send(f"**{user.display_name}** was kicked for **{reason}**.")
 
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="User Kicked",
+                description=f"A user was kicked from the server."
+            )
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            embed.add_field(name="User", value=user.mention)
+            embed.add_field(name="Reason", value=reason)
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
+
     @command()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: Member, *, reason="No reason given"):
@@ -88,6 +140,21 @@ class Moderation(Cog):
             return
         await user.ban(reason=reason)
         await ctx.send(f"**{user.display_name}** was banned for **{reason}**.")
+
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="User Baned",
+                description=f"A user was banned from the server."
+            )
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            embed.add_field(name="User", value=user.mention)
+            embed.add_field(name="Reason", value=reason)
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
 
     @command()
     @commands.has_permissions(ban_members=True)
@@ -103,6 +170,21 @@ class Moderation(Cog):
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
                 await ctx.send(f"**{user.mention}** was unbanned for **{reason}**.")
+                # logging
+                log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+                if log_channel_id is not None:
+                    embed = Embed(
+                        color=Colour.orange(),
+                        title="User Unbanned",
+                        description=f"A user was unbanned from the server."
+                    )
+                    embed.add_field(name="Moderator", value=ctx.message.author.mention)
+                    embed.add_field(name="User", value=full_username)
+                    embed.add_field(name="Reason", value=reason)
+                    log_channel = self.bot.get_channel(log_channel_id)
+                    await log_channel.send(embed=embed)
+
                 is_banned = True
             else:
                 is_banned = False
@@ -135,6 +217,21 @@ class Moderation(Cog):
             if channel.type == ChannelType.voice:
                 await channel.set_permissions(muted_role, speak=False)
 
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="User Muted",
+                description=f"A user was muted."
+            )
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            embed.add_field(name="User", value=user.mention)
+            embed.add_field(name="Reason", value=reason)
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
+
     @command()
     @commands.has_permissions(manage_guild=True)
     async def unmute(self, ctx, user: Member):
@@ -149,6 +246,19 @@ class Moderation(Cog):
         if muted_role is not None:
             await user.remove_roles(muted_role, reason="Unmuted")
             await ctx.send(f"**{user.display_name}** has been unmuted.")
+            # logging
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+            if log_channel_id is not None:
+                embed = Embed(
+                    color=Colour.orange(),
+                    title="User Unmuted",
+                    description=f"A user was unmuted."
+                )
+                embed.add_field(name="Moderator", value=ctx.message.author.mention)
+                embed.add_field(name="User", value=user.mention)
+                log_channel = self.bot.get_channel(log_channel_id)
+                await log_channel.send(embed=embed)
         else:
             await ctx.send(f"**{user.display_name}** is not muted.")
 
@@ -173,6 +283,20 @@ class Moderation(Cog):
             await channel.set_permissions(user, speak=False, reason=reason)
             await ctx.send(
                 f"**{user.display_name}** can no longer speak in the voice channel **{channel.name}**.")
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="User Blocked",
+                description=f"A user was blocked from speaking in a channel."
+            )
+            embed.add_field(name="Channel", value=f"{channel.name}")
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            embed.add_field(name="User", value=user.mention)
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
 
     @command()
     @commands.has_permissions(manage_guild=True)
@@ -191,6 +315,21 @@ class Moderation(Cog):
             await ctx.send(f"**{user.display_name}** can now send messages in the channel {channel.mention} again.")
         elif channel.type == ChannelType.voice:
             await ctx.send(f"**{user.display_name}** can now speak in the voice channel **{channel.name}** again.")
+
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="User Unblocked",
+                description=f"A user was unblocked from a channel."
+            )
+            embed.add_field(name="Channel", value=f"{channel.name}")
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            embed.add_field(name="User", value=user.mention)
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
 
 
 def setup(bot):
