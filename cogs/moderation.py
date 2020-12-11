@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog, command
-from discord import utils, Member, ChannelType, TextChannel, VoiceChannel
+from discord import utils, Member, ChannelType, TextChannel, VoiceChannel, Embed, Colour
 from discord.ext import commands
 from typing import Union
 
@@ -7,7 +7,6 @@ from typing import Union
 def perms(ctx, member):
     # Check if the user's 'best' role is higher than the member he is trying to mod.
     return ctx.author.top_role > member.top_role
-
 
 class Moderation(Cog):
     """
@@ -23,7 +22,23 @@ class Moderation(Cog):
         """
         Deletes x amount of messages in a channel. (The default is 5.)
         """
-        await ctx.channel.purge(limit=amount + 1)
+        limit = amount + 1
+        await ctx.channel.purge(limit=limit)
+
+        # logging
+        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="Messages Purged",
+                description=f"**{limit}** messages were purged."
+            )
+            embed.add_field(name="Channel", value=f"<#{ctx.channel.id}>")
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            log_channel = self.bot.get_channel(log_channel_id)
+            log_channel.send(embed=embed)
+
 
     @command(aliases=['m'])
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))

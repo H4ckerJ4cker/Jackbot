@@ -75,8 +75,8 @@ async def run():
     else:
         bot = Bot(command_prefix='!', activity=Game(name="@JackBot help"), intents=intents)
         # logger.addHandler(DiscordHandler(bot))
-        # logger.setLevel(logging.INFO)
-        # bot.log = logger
+        logger.setLevel(logging.INFO)
+        bot.log = logger
     bot.load_extension("cogs.general")
     bot.load_extension("cogs.moderation")
     bot.load_extension("cogs.fun")
