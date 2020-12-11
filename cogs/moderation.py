@@ -158,7 +158,7 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(ban_members=True)
-    async def unban(self, ctx, full_username):
+    async def unban(self, ctx, *, full_username):
         """
         Unbans a member from the server. Full username with discriminator must be used.
         """
