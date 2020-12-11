@@ -158,7 +158,7 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(ban_members=True)
-    async def unban(self, ctx, full_username, *, reason="No reason given"):
+    async def unban(self, ctx, full_username):
         """
         Unbans a member from the server. Full username with discriminator must be used.
         """
@@ -169,7 +169,7 @@ class Moderation(Cog):
 
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
-                await ctx.send(f"**{user.mention}** was unbanned for **{reason}**.")
+                await ctx.send(f"**{user.mention}** was unbanned.")
                 # logging
                 log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
 
@@ -181,7 +181,6 @@ class Moderation(Cog):
                     )
                     embed.add_field(name="Moderator", value=ctx.message.author.mention)
                     embed.add_field(name="User", value=full_username)
-                    embed.add_field(name="Reason", value=reason)
                     log_channel = self.bot.get_channel(log_channel_id)
                     await log_channel.send(embed=embed)
 
