@@ -199,6 +199,7 @@ class General(Cog):
                 "User": ctx.author.mention,
                 "Command": ctx.message.content,
                 "Server": ctx.guild.name,
+                "Owner": ctx.guild.owner.mention,
             }
         }
 

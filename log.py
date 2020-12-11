@@ -54,4 +54,4 @@ class DiscordHandler(logging.Handler):
                 self.log_channel = self.client.get_channel(772502152719499277)
     
             # Create a task in the event loop to send the logging embed
-            self.client.loop.create_task(self.log_channel.send(f"FULL TRACEBACK: ```{traceback}```", embed=embed))
+            self.client.loop.create_task(self.log_channel.send(embed=embed))
