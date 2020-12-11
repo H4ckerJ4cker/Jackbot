@@ -6,7 +6,7 @@ from typing import Union
 
 def perms(ctx, member):
     # Check if the user's 'best' role is higher than the member he is trying to mod.
-    if not member.roles and not ctx.author.roles:
+    if member.roles and ctx.author.roles:
         return True
     else:
         return ctx.author.top_role > member.top_role
