@@ -37,7 +37,7 @@ class Moderation(Cog):
             embed.add_field(name="Channel", value=f"<#{ctx.channel.id}>")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             log_channel = self.bot.get_channel(log_channel_id)
-            log_channel.send(embed=embed)
+            await log_channel.send(embed=embed)
 
 
     @command(aliases=['m'])
