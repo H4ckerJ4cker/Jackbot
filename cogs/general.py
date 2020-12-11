@@ -174,14 +174,12 @@ class General(Cog):
 
         embed.set_footer(icon_url=self.bot.user.avatar_url, text="Serving servers since 2020.")
         embed.add_field(name="Admin", value="[**Click here**](https://discord.com/oauth2/authorize?client_id"
-                                            "=758352287101353995&permissions=8&redirect_uri=https%3A%2F%2Fwww"
-                                            ".hackerjacker.co.uk&scope=bot) if you want to add the bot to your server "
-                                            "as an "
+                                            "=758352287101353995&permissions=8&scope=bot) if you want to add "
+                                            "the bot to your server as an "
                                             "administrator. (recommended)", inline=True)
         embed.add_field(name="Cherry Pick", value="[**Click here**](https://discord.com/oauth2/authorize?client_id"
-                                                  "=758352287101353995&permissions=2147483639&redirect_uri=https%3A"
-                                                  "%2F%2Fwww.hackerjacker.co.uk&scope=bot) if you want to choose what "
-                                                  "permissions the bot "
+                                                  "=758352287101353995&permissions=2147483639&scope=bot) if you want "
+                                                  "to choose what permissions the bot "
                                                   "has on your server. (may cause bugs)", inline=True)
         await ctx.send(embed=embed)
 
