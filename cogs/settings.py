@@ -151,6 +151,7 @@ class Settings(Cog):
     async def setlogging(self, ctx, *, logs_channel: TextChannel = None):
         """
         Set the logging channel where logs should be sent. If no channel is specified the logging channel will be reset.
+        All moderation commands are logged.
         """
         if ctx.guild is not None:
             if logs_channel is None:
