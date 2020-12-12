@@ -69,6 +69,76 @@ class General(Cog):
             guild.id
         )
 
+    @Cog.listener()
+    async def on_message_delete(self, message):
+        message_context = await self.bot.get_context(message)
+        if message.guild is None:
+            return
+        log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
+        if log_channel_id is None or message_context.valid is True or message.author.bot is True:
+            return
+        else:
+            log_channel = self.bot.get_channel(log_channel_id)
+
+            if not message.attachments:
+                message_embed = Embed(
+                    color=Colour.red(),
+                    title="Message deleted",
+                )
+                message_embed.add_field(name="Channel", value=f"<#{message.channel.id}>")
+                message_embed.add_field(name="Message Content", value=message.content, inline=False)
+                message_embed.add_field(name="Author", value=message.author.mention, inline=False)
+                await log_channel.send(embed=message_embed)
+            else:
+                for attachment in message.attachments:
+                    if attachment.height is not None:
+                        image_embed = Embed(
+                            color=Colour.red(),
+                            title="Image deleted",
+                        )
+                        image_embed.set_image(url=attachment.proxy_url)
+                        image_embed.add_field(name="Channel", value=f"<#{message.channel.id}>")
+                        image_embed.add_field(name="Author", value=message.author.mention, inline=False)
+                        if message.content:
+                            image_embed.add_field(name="Message Content", value=message.content, inline=False)
+                        image_embed.add_field(name="Filename", value=attachment.filename, inline=False)
+                        await log_channel.send(embed=image_embed)
+                    else:
+                        file_embed = Embed(
+                            color=Colour.red(),
+                            title="File deleted",
+                        )
+                        file_embed.add_field(name="Channel", value=f"<#{message.channel.id}>")
+                        file_embed.add_field(name="Author", value=message.author.mention, inline=False)
+                        if message.content:
+                            file_embed.add_field(name="Message Content", value=message.content, inline=False)
+                        file_embed.add_field(name="Filename", value=attachment.filename, inline=False)
+                        await log_channel.send(embed=file_embed)
+
+    @Cog.listener()
+    async def on_message_edit(self, before, after):
+        if before.guild is None:
+            return
+        log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
+        if log_channel_id is None or before.author.bot is True:
+            return
+        else:
+            log_channel = self.bot.get_channel(log_channel_id)
+            if before.author.id != self.bot.user.id:
+
+                message_embed = Embed(
+                    color=Colour.orange(),
+                    title="Message Edited",
+                )
+                message_embed.add_field(name="Channel", value=f"<#{before.channel.id}>")
+                message_embed.add_field(name="Message", value=f"[**Jump to message.**]({after.jump_url})", inline=False)
+                if before.content:
+                    message_embed.add_field(name="Message Before", value=before.content, inline=False)
+                if after.content:
+                    message_embed.add_field(name="Message After", value=after.content, inline=False)
+                message_embed.add_field(name="Author", value=before.author.mention, inline=False)
+                await log_channel.send(embed=message_embed)
+
     @command()
     async def ping(self, ctx):
         """
