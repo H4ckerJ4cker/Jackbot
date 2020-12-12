@@ -11,11 +11,8 @@ class Fun(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def is_jack(self, ctx):
-        return ctx.message.author.id == 557106447771500545
-
     @command(hidden=True)
-    @commands.check(is_jack)
+    @commands.is_owner()
     async def send(self, ctx, *, text):
         """
         Sends a message as the bot.
