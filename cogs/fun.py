@@ -12,7 +12,6 @@ class Fun(Cog):
         self.bot = bot
 
     @command(hidden=True)
-    @commands.is_owner()
     async def send(self, ctx, *, text):
         """
         Sends a message as the bot.
