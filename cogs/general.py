@@ -157,6 +157,7 @@ class General(Cog):
 
     @command(aliases=['mc'])
     @commands.cooldown(6, 120, BucketType.user)
+    @commands.cooldown(30, 1800, BucketType.guild)
     async def mcstatus(self, ctx, server_address):
         """
         Get information on a minecraft server.
