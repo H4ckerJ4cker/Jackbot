@@ -163,7 +163,7 @@ class General(Cog):
         Get information on a minecraft server.
         """
         online_embed = Embed(
-            title="Minecraft Server Status",
+            title=f"{server_address} Status",
             colour=Colour.orange(),
             description="**Loading...**"
         )
@@ -177,11 +177,10 @@ class General(Cog):
             version = status.raw['version']['name']
 
             online_embed = Embed(
-                title="Minecraft Server Status",
+                title=f"{server_address} Status",
                 colour=Colour.green()
             )
 
-            online_embed.add_field(name="Server Address", value=str(server_address), inline=True)
             online_embed.add_field(name="Server Version", value=version, inline=True)
             online_embed.add_field(name="Ping", value=f"{ping}ms", inline=True)
             online_embed.add_field(name="Players Online", value=f"{online}/{max_players}", inline=False)
@@ -195,7 +194,7 @@ class General(Cog):
             await loading_message.edit(embed=online_embed)
         except (ConnectionRefusedError, OSError):
             offline_embed = Embed(
-                title="Minecraft Server Status",
+                title=f"{server_address} Status",
                 description="The specified server is offline or could not be queried. Please try again later",
                 colour=Colour.red()
             )
