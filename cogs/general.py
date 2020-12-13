@@ -178,7 +178,8 @@ class General(Cog):
 
             online_embed = Embed(
                 title=f"{server_address} Status",
-                colour=Colour.green()
+                colour=Colour.green(),
+                description="Server is online!"
             )
 
             online_embed.add_field(name="Server Version", value=version, inline=True)
@@ -195,7 +196,7 @@ class General(Cog):
         except (ConnectionRefusedError, OSError):
             offline_embed = Embed(
                 title=f"{server_address} Status",
-                description="The specified server is offline or could not be queried. Please try again later",
+                description="The specified server is offline or could not be queried. Please try again later.",
                 colour=Colour.red()
             )
             await loading_message.edit(embed=offline_embed)
