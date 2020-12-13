@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 import random
 from mcstatus import MinecraftServer
 
+
 class General(Cog):
     """
     General Purpose Commands and Events
@@ -190,7 +191,8 @@ class General(Cog):
                 names = ", ".join([user['name'] for user in server.status().raw['players']['sample']])
                 if online > 12:
                     names = names + "..."
-                online_embed.add_field(name="Player Names", value=f"{names}", inline=False)
+                if "§" not in names:
+                    online_embed.add_field(name="Player Names", value=f"{names}", inline=False)
 
             await loading_message.edit(embed=online_embed)
         except (ConnectionRefusedError, OSError):
