@@ -193,7 +193,8 @@ class General(Cog):
                     if online > 12:
                         names = names + "..."
                     if "§" not in names:
-                        online_embed.add_field(name="Player Names", value=f"{names}", inline=False)
+                        if names:
+                            online_embed.add_field(name="Player Names", value=f"{names}", inline=False)
                 except KeyError:
                     pass
 
