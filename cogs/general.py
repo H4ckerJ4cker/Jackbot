@@ -175,14 +175,14 @@ class General(Cog):
             max_players = status.players.max
             ping = round(status.latency)
             version = status.raw['version']['name']
-
             online_embed = Embed(
                 title=f"{server_address} Status",
                 colour=Colour.green(),
                 description="Server is online!"
             )
 
-            online_embed.add_field(name="Server Version", value=version, inline=True)
+            if version:
+                online_embed.add_field(name="Server Version", value=version, inline=True)
             online_embed.add_field(name="Ping", value=f"{ping}ms", inline=True)
             online_embed.add_field(name="Players Online", value=f"{online}/{max_players}", inline=False)
 
