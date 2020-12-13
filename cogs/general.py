@@ -188,11 +188,14 @@ class General(Cog):
             online_embed.add_field(name="Players Online", value=f"{online}/{max_players}", inline=False)
 
             if online != 0:
-                names = ", ".join([user['name'] for user in server.status().raw['players']['sample']])
-                if online > 12:
-                    names = names + "..."
-                if "§" not in names:
-                    online_embed.add_field(name="Player Names", value=f"{names}", inline=False)
+                try:
+                    names = ", ".join([user['name'] for user in server.status().raw['players']['sample']])
+                    if online > 12:
+                        names = names + "..."
+                    if "§" not in names:
+                        online_embed.add_field(name="Player Names", value=f"{names}", inline=False)
+                except KeyError:
+                    pass
 
             await loading_message.edit(embed=online_embed)
         except (ConnectionRefusedError, OSError):
