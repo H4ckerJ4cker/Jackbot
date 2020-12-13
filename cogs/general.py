@@ -1,8 +1,8 @@
-from discord.ext.commands import Cog, command, Context
+from discord.ext.commands import Cog, command, Context, BucketType
 from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden
 from discord.ext import commands, tasks
 import random
-
+from mcstatus import MinecraftServer
 
 class General(Cog):
     """
@@ -154,6 +154,51 @@ class General(Cog):
         embed.add_field(name="Bot latency", value=f"{round(self.bot.latency * 1000)}ms", inline=False)
         embed.set_footer(icon_url=self.bot.user.avatar_url, text="Serving servers since 2020.")
         await ctx.send(embed=embed)
+
+    @command(aliases=['mc'])
+    @commands.cooldown(6, 120, BucketType.user)
+    async def mcstatus(self, ctx, server_address):
+        """
+        Get information on a minecraft server.
+        """
+        online_embed = Embed(
+            title="Minecraft Server Status",
+            colour=Colour.orange(),
+            description="**Loading...**"
+        )
+        loading_message = await ctx.send(embed=online_embed)
+        try:
+            server = MinecraftServer(str(server_address), 25565)
+            status = server.status()
+            online = status.players.online
+            max_players = status.players.max
+            ping = round(status.latency)
+            version = status.raw['version']['name']
+
+            online_embed = Embed(
+                title="Minecraft Server Status",
+                colour=Colour.green()
+            )
+
+            online_embed.add_field(name="Server Address", value=str(server_address), inline=True)
+            online_embed.add_field(name="Server Version", value=version, inline=True)
+            online_embed.add_field(name="Ping", value=f"{ping}ms", inline=True)
+            online_embed.add_field(name="Players Online", value=f"{online}/{max_players}", inline=False)
+
+            if online != 0:
+                names = ", ".join([user['name'] for user in server.status().raw['players']['sample']])
+                if online > 12:
+                    names = names + "..."
+                online_embed.add_field(name="Player Names", value=f"{names}", inline=False)
+
+            await loading_message.edit(embed=online_embed)
+        except (ConnectionRefusedError, OSError):
+            offline_embed = Embed(
+                title="Minecraft Server Status",
+                description="The specified server is offline or could not be queried. Please try again later",
+                colour=Colour.red()
+            )
+            await loading_message.edit(embed=offline_embed)
 
     @command()
     async def support(self, ctx):
