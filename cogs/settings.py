@@ -1,6 +1,7 @@
 from discord.ext.commands import Cog, command
 from discord.ext import commands
 from discord import utils, TextChannel, Embed, Colour
+import typing
 
 
 class Settings(Cog):
@@ -148,13 +149,13 @@ class Settings(Cog):
 
     @settings.command(aliases=['logs', 'setlogs', 'setloggingchannel'])
     @commands.has_permissions(manage_guild=True)
-    async def setlogging(self, ctx, *, logs_channel: TextChannel = None):
+    async def setlogging(self, ctx, *, logs_channel: typing.Union[TextChannel, str] = None):
         """
         Set the logging channel where logs should be sent. If no channel is specified the logging channel will be reset.
         All moderation commands are logged.
         """
         if ctx.guild is not None:
-            if logs_channel is None:
+            if logs_channel == "reset":
                 await self.bot.db.execute(
                     "UPDATE guilds SET logging_channel_id = null WHERE guild_id = $1;",
                     ctx.guild.id
@@ -163,20 +164,35 @@ class Settings(Cog):
                 await ctx.send("Logging disabled. I will not log any action. To enable run the command again with"
                                " a channel as an argument. ``@JackBot settings setlogging [channel]``")
                 return
+            elif logs_channel is None:
+                try:
+                    db_channel = self.bot.servers[ctx.guild.id]["logging_channel_id"]
+                except KeyError:
+                    self.bot.servers[ctx.guild.id] = {}
+                    db_channel = self.bot.servers[ctx.guild.id]["logging_channel_id"]
+                if db_channel is None:
+                    await ctx.send("Logging disabled. I will not log any action. To enable run the command again with"
+                                   " a channel as an argument. ``@JackBot settings setlogging [channel]``")
+                    return
+                else:
+                    channel = db_channel
 
-            await self.bot.db.execute(
-                "INSERT INTO guilds(guild_id, logging_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
-                "logging_channel_id = $2",
-                ctx.guild.id,
-                logs_channel.id,
-            )
-            try:
-                self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
-            except KeyError:
-                self.bot.servers[ctx.guild.id] = {}
-                self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
+                    await ctx.send(f"The current logging channel is is **<#{channel}>**.")
 
-            await ctx.send(f"Logging channel set to <#{logs_channel.id}>")
+            elif type(logs_channel) == TextChannel:
+                await self.bot.db.execute(
+                    "INSERT INTO guilds(guild_id, logging_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
+                    "logging_channel_id = $2",
+                    ctx.guild.id,
+                    logs_channel.id,
+                )
+                try:
+                    self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
+                except KeyError:
+                    self.bot.servers[ctx.guild.id] = {}
+                    self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
+
+                await ctx.send(f"Logging channel set to <#{logs_channel.id}>")
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
