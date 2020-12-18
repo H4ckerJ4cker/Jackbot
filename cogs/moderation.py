@@ -1,7 +1,7 @@
 from discord.ext.commands import Cog, command, MemberNotFound
 from discord import utils, Member, ChannelType, TextChannel, VoiceChannel, Embed, Colour
 from discord.ext import commands
-from typing import Union
+from typing import Optional, Union
 
 
 def perms(ctx, member):
@@ -18,11 +18,10 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(manage_guild=True)
-    async def purge(self, ctx, user: Member=None, amount=5):
+    async def purge(self, ctx, user: Optional[Member], amount=5):
         """
         Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from that user.
         """
-        ctx.command = "purge"
 
         def user_check(message):
             return message.author == user
