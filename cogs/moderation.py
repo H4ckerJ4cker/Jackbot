@@ -28,9 +28,7 @@ class Moderation(Cog):
         if user is None:
             await ctx.channel.purge(limit=amount + 1)
         else:
-            await ctx.message.delete()
-            await ctx.channel.purge(limit=amount, check=user_check)
-
+            await ctx.channel.purge(limit=amount + 1, check=user_check)
 
         # logging
         log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
