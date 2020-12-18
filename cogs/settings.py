@@ -115,12 +115,12 @@ class Settings(Cog):
 
     @settings.command(aliases=['polls', 'pollschannel'])
     @commands.has_permissions(manage_guild=True)
-    async def setpollchannel(self, ctx, *, poll_channel: TextChannel = None):
+    async def setpollchannel(self, ctx, *, poll_channel: typing.Union[TextChannel, str] = None):
         """
-        Set the poll channel where polls should be sent. If no channel is specified the poll channel will be reset.
+        Set the poll channel where polls should be sent. If "reset" is passed the poll channel will be reset.
         """
         if ctx.guild is not None:
-            if poll_channel is None:
+            if poll_channel == "reset":
                 await self.bot.db.execute(
                     "UPDATE guilds SET poll_channel_id = null WHERE guild_id = $1;",
                     ctx.guild.id
@@ -130,20 +130,41 @@ class Settings(Cog):
                                "the command in. To add a poll channel type ``@JackBot settings setpollchannel ["
                                "channel]`` ")
                 return
+            elif poll_channel is None:
+                try:
+                    db_channel = self.bot.servers[ctx.guild.id]["poll_channel_id"]
+                except KeyError:
+                    self.bot.servers[ctx.guild.id] = {}
+                    db_channel = self.bot.servers[ctx.guild.id]["poll_channel_id"]
+                if db_channel is None:
+                    await ctx.send(
+                        "Poll channel is disabled. If a user makes a poll it will be sent to the channel they ran "
+                        "the command in. To add a poll channel type ``@JackBot settings setpollchannel ["
+                        "channel]`` ")
+                    return
+                else:
+                    channel = db_channel
 
-            await self.bot.db.execute(
-                "INSERT INTO guilds(guild_id, poll_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
-                "poll_channel_id = $2",
-                ctx.guild.id,
-                poll_channel.id,
-            )
-            try:
-                self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
-            except KeyError:
-                self.bot.servers[ctx.guild.id] = {}
-                self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
+                    await ctx.send(
+                        f"The current poll channel is is **<#{channel}>**. To change it run the command again with"
+                        " a channel as an argument. ``@JackBot settings setpollchannel [channel]``")
 
-            await ctx.send(f"Poll channel set to <#{poll_channel.id}>")
+            elif type(poll_channel) == TextChannel:
+                await self.bot.db.execute(
+                    "INSERT INTO guilds(guild_id, poll_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
+                    "poll_channel_id = $2",
+                    ctx.guild.id,
+                    poll_channel.id,
+                )
+                try:
+                    self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
+                except KeyError:
+                    self.bot.servers[ctx.guild.id] = {}
+                    self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
+
+                await ctx.send(f"Poll channel set to <#{poll_channel.id}>")
+            else:
+                await ctx.send("⚠️ Channel not found, please try again.")
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
@@ -151,7 +172,7 @@ class Settings(Cog):
     @commands.has_permissions(manage_guild=True)
     async def setlogging(self, ctx, *, logs_channel: typing.Union[TextChannel, str] = None):
         """
-        Set the logging channel where logs should be sent. If no channel is specified the logging channel will be reset.
+        Set the logging channel where logs should be sent. If you pass in "reset" logging channel will be reset.
         All moderation commands are logged.
         """
         if ctx.guild is not None:
@@ -177,7 +198,9 @@ class Settings(Cog):
                 else:
                     channel = db_channel
 
-                    await ctx.send(f"The current logging channel is is **<#{channel}>**.")
+                    await ctx.send(
+                        f"The current logging channel is is **<#{channel}>**. To change it run the command again with"
+                        " a channel as an argument. ``@JackBot settings setlogging [channel]``")
 
             elif type(logs_channel) == TextChannel:
                 await self.bot.db.execute(
@@ -193,6 +216,8 @@ class Settings(Cog):
                     self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
 
                 await ctx.send(f"Logging channel set to <#{logs_channel.id}>")
+            else:
+                await ctx.send("⚠️ Channel not found, please try again.")
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
