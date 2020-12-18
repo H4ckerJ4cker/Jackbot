@@ -18,17 +18,17 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(administrator=True)
-    async def purge(self, ctx, user: Member=None, amount=6):
+    async def purge(self, ctx, user: Member=None, amount=5):
         """
         Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from that user.
         """
         def user_check(message):
             return message.author == user
         if user is None:
-            await ctx.channel.purge(limit=amount)
+            await ctx.channel.purge(limit=amount + 1)
         else:
             await ctx.channel.purge(limit=amount, check=user_check)
-        await ctx.message.delete()
+            await ctx.message.delete()
 
 
         # logging
@@ -38,7 +38,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="Messages Purged",
-                description=f"**{limit}** messages were purged."
+                description=f"**{amount}** messages were purged."
             )
             embed.add_field(name="Channel", value=f"<#{ctx.channel.id}>")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
