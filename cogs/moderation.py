@@ -18,7 +18,7 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(manage_guild=True)
-    async def purge(self, ctx, user: Optional[Member], amount=5):
+    async def purge(self, ctx, amount: int, user: Optional[Member] = None):
         """
         Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from that user.
         """
