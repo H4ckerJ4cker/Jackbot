@@ -28,8 +28,8 @@ class Moderation(Cog):
         if user is None:
             await ctx.channel.purge(limit=amount + 1)
         else:
-            await ctx.channel.purge(limit=amount, check=user_check)
             await ctx.message.delete()
+            await ctx.channel.purge(limit=amount, check=user_check)
 
 
         # logging
