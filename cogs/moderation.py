@@ -18,12 +18,18 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(administrator=True)
-    async def purge(self, ctx, amount=6):
+    async def purge(self, ctx, user: Member=None, amount=6):
         """
-        Deletes x amount of messages in a channel. (The default is 5.)
+        Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from that user.
         """
-        limit = amount + 1
-        await ctx.channel.purge(limit=limit)
+        def user_check(message):
+            return message.author == user
+        if user is None:
+            await ctx.channel.purge(limit=amount)
+        else:
+            await ctx.channel.purge(limit=amount, check=user_check)
+        await ctx.message.delete()
+
 
         # logging
         log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
