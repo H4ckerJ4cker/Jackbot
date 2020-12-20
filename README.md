@@ -1,4 +1,4 @@
-# Jackbot
+# JackBot
 <a target="_blank" href="https://top.gg/bot/758352287101353995/" title="JackBot"><img src="https://top.gg/api/widget/status/758352287101353995.svg?noavatar=true"></a>
 <a target="_blank" href="https://top.gg/bot/758352287101353995/" title="JackBot"><img src="https://top.gg/api/widget/servers/758352287101353995.svg?noavatar=true"></a>
 <a target="_blank" href="https://top.gg/bot/758352287101353995/" title="JackBot"><img src="https://top.gg/api/widget/upvotes/758352287101353995.svg?noavatar=true"></a>
