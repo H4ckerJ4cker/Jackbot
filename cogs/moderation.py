@@ -32,7 +32,10 @@ class Moderation(Cog):
             await ctx.channel.purge(limit=amount + 1, check=user_check)
 
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(
@@ -62,7 +65,10 @@ class Moderation(Cog):
             await member.edit(mute=True)
 
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(
@@ -93,7 +99,10 @@ class Moderation(Cog):
             await member.edit(mute=False)
 
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(
@@ -120,7 +129,10 @@ class Moderation(Cog):
         await ctx.send(f"**{user.display_name}** was kicked for **{reason}**.")
 
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(
@@ -148,7 +160,10 @@ class Moderation(Cog):
         await ctx.send(f"**{user.display_name}** was banned for **{reason}**.")
 
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(
@@ -177,7 +192,10 @@ class Moderation(Cog):
                 await ctx.guild.unban(user)
                 await ctx.send(f"**{user.mention}** was unbanned.")
                 # logging
-                log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+                try:
+                    log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+                except KeyError:
+                    log_channel_id = None
 
                 if log_channel_id is not None:
                     embed = Embed(
@@ -223,7 +241,10 @@ class Moderation(Cog):
                 await channel.set_permissions(muted_role, speak=False)
 
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(
@@ -252,7 +273,10 @@ class Moderation(Cog):
             await user.remove_roles(muted_role, reason="Unmuted")
             await ctx.send(f"**{user.display_name}** has been unmuted.")
             # logging
-            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+            try:
+                log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+            except KeyError:
+                log_channel_id = None
 
             if log_channel_id is not None:
                 embed = Embed(
@@ -289,7 +313,10 @@ class Moderation(Cog):
             await ctx.send(
                 f"**{user.display_name}** can no longer speak in the voice channel **{channel.name}**.")
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(
@@ -322,7 +349,10 @@ class Moderation(Cog):
             await ctx.send(f"**{user.display_name}** can now speak in the voice channel **{channel.name}** again.")
 
         # logging
-        log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[ctx.message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
 
         if log_channel_id is not None:
             embed = Embed(

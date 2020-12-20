@@ -96,7 +96,10 @@ class General(Cog):
         message_context = await self.bot.get_context(message)
         if message.guild is None:
             return
-        log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
         if log_channel_id is None or message_context.valid is True or message.author.bot is True:
             return
         else:
@@ -141,7 +144,10 @@ class General(Cog):
     async def on_message_edit(self, before, after):
         if before.guild is None:
             return
-        log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
+        try:
+            log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
+        except KeyError:
+            log_channel_id = None
         if log_channel_id is None or before.author.bot is True:
             return
         else:
