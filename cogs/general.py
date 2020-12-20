@@ -236,6 +236,13 @@ class General(Cog):
         await ctx.send("https://discord.gg/t58T4mU9v9")
 
     @command()
+    async def vote(self, ctx):
+        """
+        Sends an link to a page where you can vote for the bot to help it grow.
+        """
+        await ctx.send("https://top.gg/bot/758352287101353995/vote")
+
+    @command()
     async def invite(self, ctx):
         """
         Sends a link you can use to add the bot to your server.
