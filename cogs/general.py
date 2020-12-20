@@ -15,6 +15,7 @@ class General(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.status.start()
+        self.update_dbl.start()
 
     def cog_unload(self):
         self.status.cancel()
@@ -28,7 +29,6 @@ class General(Cog):
 
     @tasks.loop(seconds=125)
     async def status(self):
-
         activity_guilds = Activity(name=f'{len(self.bot.guilds)} servers', type=ActivityType.watching)
         activity_help = Activity(name='@Jackbot help', type=ActivityType.playing)
         activity_listening = Activity(name='to your suggestions', type=ActivityType.listening)
