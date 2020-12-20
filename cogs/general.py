@@ -40,12 +40,14 @@ class General(Cog):
         url = "https://top.gg/api/bots/758352287101353995/stats"
         payload = {'server_count': len(self.bot.guilds)}
         headers = {'Authorization': environ.get("DBL_TOKEN")}
+        if not environ.get("LOCAL"):
 
-        async with aiohttp.ClientSession() as cs:
-            r = await cs.post(url, headers=headers, data=payload)
-            if r.status != 200:
-                log = self.bot.get_channel(772502152719499277)
-                await log.send(f"Updating server count on dbl failed with **{r.status}**.")
+            async with aiohttp.ClientSession() as cs:
+                r = await cs.post(url, headers=headers, data=payload)
+                print(r.status)
+                if r.status != 200:
+                    log = self.bot.get_channel(772502152719499277)
+                    await log.send(f"Updating server count on dbl failed with **{r.status}**.")
 
     @status.before_loop
     async def before_printer(self):
