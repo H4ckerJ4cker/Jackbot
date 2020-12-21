@@ -112,7 +112,8 @@ class General(Cog):
             bucket = self.cd_mapping.get_bucket(m)
             retry_after = bucket.update_rate_limit()
             if retry_after:
-                await channel.send(f"{member.mention} You are rate limited, this incident has been reported.", delete_after=10)
+                await channel.send(f"{member.mention} You are rate limited, this incident has been reported.",
+                                   delete_after=10)
                 log = self.bot.get_channel(772502152719499277)
                 await log.send(f"{member.mention} Just hit the rate limit for the vote role.")
                 return
@@ -124,7 +125,6 @@ class General(Cog):
                         voted = await r.json()
                         voted = voted['voted']
 
-
             if voted == 1:
                 role = guild.get_role(role)
                 if role not in member.roles:
@@ -135,7 +135,10 @@ class General(Cog):
                     await channel.send(f"Thanks for voting {member.mention}, You have already claimed your reward.",
                                        delete_after=10)
             else:
-                await channel.send(f"Looks like you haven't voted recently. {member.mention}. Make sure you vote and then claim your reward here within 12 hours.", delete_after=10)
+                await channel.send(
+                    f"Looks like you haven't voted recently. {member.mention}. Make sure you vote and then claim your reward here within 12 hours.",
+                    delete_after=10)
+
     @Cog.listener()
     async def on_message_delete(self, message):
         message_context = await self.bot.get_context(message)
