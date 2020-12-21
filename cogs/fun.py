@@ -1,6 +1,6 @@
-from discord.ext.commands import Cog, command, Context
+from discord.ext.commands import Cog, command, Context, EmojiConverter
 from discord import Embed
-from discord.ext import commands
+from typing import Optional
 
 
 class Fun(Cog):
@@ -12,12 +12,14 @@ class Fun(Cog):
         self.bot = bot
 
     @command(hidden=True)
-    async def send(self, ctx, *, text):
+    async def send(self, ctx, emote: Optional[EmojiConverter] = None, *, text):
         """
         Sends a message as the bot.
         """
         await ctx.message.delete()
-        await ctx.send(text)
+        message = await ctx.send(text)
+        if emote is not None:
+            await message.add_reaction(emote)
 
     @command()
     async def poll(self, ctx: Context, *, poll_question: str):
