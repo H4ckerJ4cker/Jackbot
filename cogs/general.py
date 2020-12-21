@@ -122,6 +122,7 @@ class General(Cog):
                     await log.send(f"{member.mention} Just hit the rate limit for the vote role.")
                 return
             else:
+                await m.remove_reaction(utils.get(guild.emojis, id=Vote.vote_emoji), member)
                 url = "https://top.gg/api/bots/758352287101353995/check"
                 headers = {'Authorization': environ.get("DBL_TOKEN")}
                 async with aiohttp.ClientSession() as cs:
