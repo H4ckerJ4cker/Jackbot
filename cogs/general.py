@@ -1,4 +1,4 @@
-from discord.ext.commands import Cog, command, Context, BucketType, MessageConverter
+from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping
 from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden
 from discord.ext import commands, tasks
 import random
@@ -6,6 +6,7 @@ from mcstatus import MinecraftServer
 import aiohttp
 from os import environ
 from constants import Vote
+import datetime
 
 
 class General(Cog):
@@ -92,22 +93,37 @@ class General(Cog):
         log = self.bot.get_channel(772502152719499277)
         await log.send(f"I just left **{guild.name}**")
 
+    cd_mapping = CooldownMapping.from_cooldown(3, 60, BucketType.member)
+
     @Cog.listener()
     async def on_raw_reaction_add(self, payload):
         if payload.message_id == Vote.vote_message and payload.emoji.id == Vote.vote_emoji:
             guild = 779017169161158669
             role = 786714200176459828
             channel = 790651977561800724
-            url = "https://top.gg/api/bots/758352287101353995/check"
-            headers = {'Authorization': environ.get("DBL_TOKEN")}
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(url + f"?userId={payload.user_id}", headers=headers) as r:
-                    voted = await r.json()
-                    voted = voted['voted']
 
             guild = self.bot.get_guild(guild)
             member = guild.get_member(payload.user_id)
             channel = self.bot.get_channel(channel)
+
+            m = await channel.fetch_message(Vote.vote_message)
+            await m.remove_reaction(utils.get(guild.emojis, id=Vote.vote_emoji), member)
+
+            bucket = self.cd_mapping.get_bucket(m)
+            retry_after = bucket.update_rate_limit()
+            if retry_after:
+                await channel.send(f"{member.mention} You are rate limited, this incident has been reported.", delete_after=10)
+                log = self.bot.get_channel(772502152719499277)
+                await log.send(f"{member.mention} Just hit the rate limit for the vote role.")
+                return
+            else:
+                url = "https://top.gg/api/bots/758352287101353995/check"
+                headers = {'Authorization': environ.get("DBL_TOKEN")}
+                async with aiohttp.ClientSession() as cs:
+                    async with cs.get(url + f"?userId={payload.user_id}", headers=headers) as r:
+                        voted = await r.json()
+                        voted = voted['voted']
+
 
             if voted == 1:
                 role = guild.get_role(role)
@@ -120,9 +136,6 @@ class General(Cog):
                                        delete_after=10)
             else:
                 await channel.send(f"Looks like you haven't voted recently. {member.mention}. Make sure you vote and then claim your reward here within 12 hours.", delete_after=10)
-            m = await channel.fetch_message(Vote.vote_message)
-            await m.remove_reaction(utils.get(guild.emojis, id=Vote.vote_emoji), member)
-
     @Cog.listener()
     async def on_message_delete(self, message):
         message_context = await self.bot.get_context(message)
