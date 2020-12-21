@@ -120,8 +120,8 @@ class General(Cog):
                                        delete_after=10)
             else:
                 await channel.send(f"Looks like you haven't voted recently. {member.mention}. Make sure you vote and then claim your reward here within 12 hours.", delete_after=10)
-            m = await channel.fetch_message(message_id)
-            await m.remove_reaction(utils.get(guild.emojis, id=emoji), member)
+            m = await channel.fetch_message(Vote.vote_message)
+            await m.remove_reaction(utils.get(guild.emojis, id=Vote.vote_emoji), member)
 
     @Cog.listener()
     async def on_message_delete(self, message):
