@@ -1,4 +1,4 @@
-from discord.ext.commands import Cog, command, Context, EmojiConverter
+from discord.ext.commands import Cog, command, Context, EmojiConverter, MessageConverter
 from discord import Embed
 from typing import Optional
 
@@ -20,6 +20,13 @@ class Fun(Cog):
         message = await ctx.send(text)
         if emote is not None:
             await message.add_reaction(emote)
+
+    @command(hidden=True)
+    async def react(self, ctx, emote: EmojiConverter, message: MessageConverter):
+        """
+        reacts to messaage.
+        """
+        await message.add_reaction(emote)
 
     @command()
     async def poll(self, ctx: Context, *, poll_question: str):
