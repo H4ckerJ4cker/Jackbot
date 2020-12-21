@@ -126,6 +126,9 @@ class General(Cog):
                 headers = {'Authorization': environ.get("DBL_TOKEN")}
                 async with aiohttp.ClientSession() as cs:
                     async with cs.get(url + f"?userId={payload.user_id}", headers=headers) as r:
+                        if r.status != 200:
+                            log = self.bot.get_channel(772502152719499277)
+                            await log.send(f"Checking if a user voted on dbl failed with **{r.status}**.")
                         voted = await r.json()
                         voted = voted['voted']
 
