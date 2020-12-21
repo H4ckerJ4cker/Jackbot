@@ -111,10 +111,14 @@ class General(Cog):
             channel = self.bot.get_channel(channel)
 
             if voted == 1:
-                await channel.send(f"Thanks for voting {member.mention}, You have been given your reward.", delete_after=10)
                 role = guild.get_role(role)
                 if role not in member.roles:
                     await member.add_roles(role, reason="vip role")
+                    await channel.send(f"Thanks for voting {member.mention}, You have been given your reward.",
+                                       delete_after=10)
+                else:
+                    await channel.send(f"Thanks for voting {member.mention}, You have already claimed your reward.",
+                                       delete_after=10)
             else:
                 await channel.send(f"Looks like you haven't voted yet {member.mention}. Please use the link above to vote.", delete_after=10)
             m = await channel.fetch_message(message_id)
