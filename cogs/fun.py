@@ -26,6 +26,7 @@ class Fun(Cog):
         """
         reacts to messaage.
         """
+        await ctx.message.delete()
         await message.add_reaction(emote)
 
     @command()
