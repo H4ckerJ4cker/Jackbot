@@ -93,7 +93,7 @@ class General(Cog):
 
     @Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        message_id = 790654327155851344
+        message_id = 790656363332108348
         emoji = 779124573286957078
         if payload.message_id == message_id and payload.emoji.id == emoji:
             guild = 779017169161158669
@@ -120,7 +120,7 @@ class General(Cog):
                     await channel.send(f"Thanks for voting {member.mention}, You have already claimed your reward.",
                                        delete_after=10)
             else:
-                await channel.send(f"Looks like you haven't voted yet {member.mention}. Please use the link above to vote.", delete_after=10)
+                await channel.send(f"Looks like you haven't voted recently. {member.mention}. Make sure you vote and then claim your reward here within 12 hours.", delete_after=10)
             m = await channel.fetch_message(message_id)
             await m.remove_reaction(utils.get(guild.emojis, id=emoji), member)
 
