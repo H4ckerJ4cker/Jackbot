@@ -115,7 +115,7 @@ class General(Cog):
             if retry_after:
                 bucket_bot = self.cd_mapping_bot.get_bucket(m)
                 retry_after_bot = bucket_bot.update_rate_limit()
-                if retry_after_bot:
+                if not retry_after_bot:
                     await channel.send(f"{member.mention} You are rate limited, this incident has been reported.",
                                        delete_after=10)
                     log = self.bot.get_channel(772502152719499277)
