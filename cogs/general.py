@@ -279,7 +279,8 @@ class General(Cog):
         """
         Sends an link to a page where you can vote for the bot to help it grow.
         """
-        await ctx.send("https://top.gg/bot/758352287101353995/vote")
+        await ctx.send("Vote for me on top.gg to get a role in my support server (use ``@JackBot support`` for an "
+                       "invite), https://top.gg/bot/758352287101353995/vote")
 
     @command()
     async def invite(self, ctx):
