@@ -94,6 +94,7 @@ class General(Cog):
         await log.send(f"I just left **{guild.name}**")
 
     cd_mapping = CooldownMapping.from_cooldown(3, 60, BucketType.member)
+    cd_mapping_bot = CooldownMapping.from_cooldown(1, 60, BucketType.member)
 
     @Cog.listener()
     async def on_raw_reaction_add(self, payload):
@@ -112,10 +113,13 @@ class General(Cog):
             bucket = self.cd_mapping.get_bucket(m)
             retry_after = bucket.update_rate_limit()
             if retry_after:
-                await channel.send(f"{member.mention} You are rate limited, this incident has been reported.",
-                                   delete_after=10)
-                log = self.bot.get_channel(772502152719499277)
-                await log.send(f"{member.mention} Just hit the rate limit for the vote role.")
+                bucket_bot = self.cd_mapping_bot.get_bucket(m)
+                retry_after_bot = bucket_bot.update_rate_limit()
+                if retry_after_bot:
+                    await channel.send(f"{member.mention} You are rate limited, this incident has been reported.",
+                                       delete_after=10)
+                    log = self.bot.get_channel(772502152719499277)
+                    await log.send(f"{member.mention} Just hit the rate limit for the vote role.")
                 return
             else:
                 url = "https://top.gg/api/bots/758352287101353995/check"
