@@ -1,4 +1,4 @@
-from discord.ext.commands import Cog, command, Context, BucketType
+from discord.ext.commands import Cog, command, Context, BucketType, MessageConverter
 from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden
 from discord.ext import commands, tasks
 import random
@@ -90,6 +90,35 @@ class General(Cog):
         )
         log = self.bot.get_channel(772502152719499277)
         await log.send(f"I just left **{guild.name}**")
+
+    @Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        message_id = 790654327155851344
+        emoji = 779124573286957078
+        if payload.message_id == message_id and payload.emoji.id == emoji:
+            guild = 779017169161158669
+            role = 786714200176459828
+            channel = 790651977561800724
+            url = "https://top.gg/api/bots/758352287101353995/check"
+            headers = {'Authorization': environ.get("DBL_TOKEN")}
+            async with aiohttp.ClientSession() as cs:
+                async with cs.get(url + f"?userId={payload.user_id}", headers=headers) as r:
+                    voted = await r.json()
+                    voted = voted['voted']
+
+            guild = self.bot.get_guild(guild)
+            member = guild.get_member(payload.user_id)
+            channel = self.bot.get_channel(channel)
+
+            if voted == 1:
+                await channel.send(f"Thanks for voting {member.mention}, You have been given your reward.", delete_after=10)
+                role = guild.get_role(role)
+                if role not in member.roles:
+                    await member.add_roles(role, reason="vip role")
+            else:
+                await channel.send(f"Looks like you haven't voted yet {member.mention}. Please use the link above to vote.", delete_after=10)
+            m = await channel.fetch_message(message_id)
+            await m.remove_reaction(utils.get(guild.emojis, id=emoji), member)
 
     @Cog.listener()
     async def on_message_delete(self, message):
