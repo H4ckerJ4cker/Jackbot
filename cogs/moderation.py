@@ -8,6 +8,7 @@ def perms(ctx, member):
     # Check if the user's 'best' role is higher than the member he is trying to mod.
     return ctx.author.top_role > member.top_role
 
+
 class Moderation(Cog):
     """
     Moderation Commands and Events
@@ -18,13 +19,14 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(manage_guild=True)
-    async def purge(self, ctx, amount: int, user: Optional[Member] = None):
+    async def purge(self, ctx, user: Optional[Member], amount: int):
         """
         Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from that user.
         """
 
         def user_check(message):
             return message.author == user
+
         if user is None:
             await ctx.channel.purge(limit=amount + 1)
         else:
@@ -47,7 +49,6 @@ class Moderation(Cog):
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             log_channel = self.bot.get_channel(log_channel_id)
             await log_channel.send(embed=embed)
-
 
     @command(aliases=['m'])
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))
