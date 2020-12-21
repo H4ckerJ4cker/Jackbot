@@ -108,7 +108,6 @@ class General(Cog):
             channel = self.bot.get_channel(channel)
 
             m = await channel.fetch_message(Vote.vote_message)
-            await m.remove_reaction(utils.get(guild.emojis, id=Vote.vote_emoji), member)
 
             bucket = self.cd_mapping.get_bucket(m)
             retry_after = bucket.update_rate_limit()
