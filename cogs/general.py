@@ -5,6 +5,7 @@ import random
 from mcstatus import MinecraftServer
 import aiohttp
 from os import environ
+from constants import Vote
 
 
 class General(Cog):
@@ -93,9 +94,7 @@ class General(Cog):
 
     @Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        message_id = 790656363332108348
-        emoji = 779124573286957078
-        if payload.message_id == message_id and payload.emoji.id == emoji:
+        if payload.message_id == Vote.vote_message and payload.emoji.id == Vote.vote_emoji:
             guild = 779017169161158669
             role = 786714200176459828
             channel = 790651977561800724
