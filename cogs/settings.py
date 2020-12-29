@@ -40,11 +40,9 @@ class Settings(Cog):
         """
         if ctx.guild is not None:
             if new_prefix is None:
-                try:
-                    dbprefix = self.bot.servers[ctx.guild.id]["prefix"]
-                except KeyError:
+                if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                    dbprefix = self.bot.servers[ctx.guild.id]["prefix"]
+                dbprefix = self.bot.servers[ctx.guild.id].get("prefix")
                 if dbprefix is None:
                     prefix = '!'
                 else:
@@ -58,12 +56,9 @@ class Settings(Cog):
                     ctx.guild.id,
                     new_prefix,
                 )
-                try:
-                    self.bot.servers[ctx.guild.id]["prefix"] = new_prefix
-                except KeyError:
-                    # server is not in dict.
+                if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                    self.bot.servers[ctx.guild.id]["prefix"] = new_prefix
+                self.bot.servers[ctx.guild.id]["prefix"] = new_prefix
                 await ctx.send(f"Prefix set to **{new_prefix}**.")
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
@@ -84,7 +79,9 @@ class Settings(Cog):
                 await ctx.send("Auto role disabled. To enable, run the command again with a role value.")
                 return
             elif role_name is None:
-                join_role = self.bot.servers[ctx.guild.id]["join_role_id"]
+                if ctx.guild.id not in self.bot.servers:
+                    self.bot.servers[ctx.guild.id] = {}
+                join_role = self.bot.servers[ctx.guild.id].get("join_role_id")
                 if join_role is None:
                     await ctx.send(f"No autorole configured to add one type. ``@JackBot settings setautorole ["
                                    f"role_name]``")
@@ -101,11 +98,9 @@ class Settings(Cog):
                     ctx.guild.id,
                     role.id,
                 )
-                try:
-                    self.bot.servers[ctx.guild.id]["join_role_id"] = role.id
-                except KeyError:
+                if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                    self.bot.servers[ctx.guild.id]["join_role_id"] = role.id
+                self.bot.servers[ctx.guild.id]["join_role_id"] = role.id
 
                 await ctx.send(f"When a member joins they will be given the role **{role.name}**.")
             else:
@@ -131,11 +126,9 @@ class Settings(Cog):
                                "channel]`` ")
                 return
             elif poll_channel is None:
-                try:
-                    db_channel = self.bot.servers[ctx.guild.id]["poll_channel_id"]
-                except KeyError:
+                if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                    db_channel = self.bot.servers[ctx.guild.id]["poll_channel_id"]
+                db_channel = self.bot.servers[ctx.guild.id].get("poll_channel_id")
                 if db_channel is None:
                     await ctx.send(
                         "Poll channel is disabled. If a user makes a poll it will be sent to the channel they ran "
@@ -156,11 +149,9 @@ class Settings(Cog):
                     ctx.guild.id,
                     poll_channel.id,
                 )
-                try:
-                    self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
-                except KeyError:
+                if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                    self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
+                self.bot.servers[ctx.guild.id]["poll_channel_id"] = poll_channel.id
 
                 await ctx.send(f"Poll channel set to <#{poll_channel.id}>")
             else:
@@ -186,11 +177,9 @@ class Settings(Cog):
                                " a channel as an argument. ``@JackBot settings setlogging [channel]``")
                 return
             elif logs_channel is None:
-                try:
-                    db_channel = self.bot.servers[ctx.guild.id]["logging_channel_id"]
-                except KeyError:
+                if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                    db_channel = self.bot.servers[ctx.guild.id]["logging_channel_id"]
+                db_channel = self.bot.servers[ctx.guild.id].get("logging_channel_id")
                 if db_channel is None:
                     await ctx.send("Logging disabled. I will not log any action. To enable run the command again with"
                                    " a channel as an argument. ``@JackBot settings setlogging [channel]``")
@@ -209,11 +198,9 @@ class Settings(Cog):
                     ctx.guild.id,
                     logs_channel.id,
                 )
-                try:
-                    self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
-                except KeyError:
+                if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                    self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
+                self.bot.servers[ctx.guild.id]["logging_channel_id"] = logs_channel.id
 
                 await ctx.send(f"Logging channel set to <#{logs_channel.id}>")
             else:

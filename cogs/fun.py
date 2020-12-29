@@ -34,7 +34,9 @@ class Fun(Cog):
         """
         Takes a poll question and creates a poll in the poll channel or in the same channel it was invoked if no poll channel is setup.
         """
-        poll_channel_id = self.bot.servers[ctx.guild.id]["poll_channel_id"]
+        if ctx.guild.id not in self.bot.servers:
+            self.bot.servers[ctx.guild.id] = {}
+        poll_channel_id = self.bot.servers[ctx.guild.id].get("poll_channel_id")
         if poll_channel_id is not None:
             confirm_msg = Embed(
                 description=f":white_check_mark: Your poll has been sent to <#{poll_channel_id}> to be voted on.",

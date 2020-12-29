@@ -79,7 +79,10 @@ class General(Cog):
 
     @Cog.listener()
     async def on_member_join(self, member):
-        join_role = self.bot.servers[member.guild.id]["join_role_id"]
+        try:
+            join_role = self.bot.servers[member.guild.id]["join_role_id"]
+        except KeyError:
+            join_role = None
         if join_role is not None:
             role = member.guild.get_role(join_role)
             await member.add_roles(role)
@@ -151,10 +154,9 @@ class General(Cog):
         message_context = await self.bot.get_context(message)
         if message.guild is None:
             return
-        try:
-            log_channel_id = self.bot.servers[message.guild.id]["logging_channel_id"]
-        except KeyError:
-            log_channel_id = None
+        if message.guild.id not in self.bot.servers:
+            self.bot.servers[message.guild.id] = {}
+        log_channel_id = self.bot.servers[message.guild.id].get("logging_channel_id")
         if log_channel_id is None or message_context.valid is True or message.author.bot is True:
             return
         else:
@@ -199,10 +201,10 @@ class General(Cog):
     async def on_message_edit(self, before, after):
         if before.guild is None:
             return
-        try:
-            log_channel_id = self.bot.servers[before.guild.id]["logging_channel_id"]
-        except KeyError:
-            log_channel_id = None
+        if before.guild.id not in self.bot.servers:
+            self.bot.servers[before.guild.id] = {}
+        log_channel_id = self.bot.servers[before.guild.id].get("logging_channel_id")
+
         if log_channel_id is None or before.author.bot is True:
             return
         else:
@@ -331,11 +333,9 @@ class General(Cog):
         Get the current prefix.
         """
         if ctx.guild is not None:
-            try:
-                dbprefix = self.bot.servers[ctx.guild.id]["prefix"]
-            except KeyError:
+            if ctx.guild.id not in self.bot.servers:
                 self.bot.servers[ctx.guild.id] = {}
-                dbprefix = self.bot.servers[ctx.guild.id]["prefix"]
+            dbprefix = self.bot.servers[ctx.guild.id].get("prefix")
             if dbprefix is None:
                 prefix = '!'
             else:
