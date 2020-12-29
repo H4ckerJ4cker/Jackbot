@@ -39,10 +39,10 @@ class General(Cog):
 
     @tasks.loop(minutes=30)
     async def update_dbl(self):
-        url = "https://top.gg/api/bots/758352287101353995/stats"
-        payload = {'server_count': len(self.bot.guilds)}
-        headers = {'Authorization': environ.get("DBL_TOKEN")}
-        if not environ.get("LOCAL"):
+        if not environ.get("TESTING"):
+            url = "https://top.gg/api/bots/758352287101353995/stats"
+            payload = {'server_count': len(self.bot.guilds)}
+            headers = {'Authorization': environ.get("DBL_TOKEN")}
 
             async with aiohttp.ClientSession() as cs:
                 r = await cs.post(url, headers=headers, data=payload)
