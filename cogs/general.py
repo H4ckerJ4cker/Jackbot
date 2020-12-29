@@ -60,7 +60,7 @@ class General(Cog):
 
     @Cog.listener()
     async def on_guild_join(self, guild):
-        general = utils.find(lambda x: x.name == 'general', guild.text_channels)
+        general = utils.find(lambda x: 'general' in x.name, guild.text_channels)
         join_msg = (
             "Hi I'm JackBot, here for all your small time discord needs. My default prefix is **!** but "
             "you can change it with ``!settings prefix [new_prefix]`` and you can always summon me with a mention. "
