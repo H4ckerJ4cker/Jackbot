@@ -79,10 +79,9 @@ class General(Cog):
 
     @Cog.listener()
     async def on_member_join(self, member):
-        try:
-            join_role = self.bot.servers[member.guild.id]["join_role_id"]
-        except KeyError:
-            join_role = None
+        if member.guild.id not in self.bot.servers:
+            self.bot.servers[member.guild.id] = {}
+        join_role = self.bot.servers[member.guild.id].get("join_role_id")
         if join_role is not None:
             role = member.guild.get_role(join_role)
             await member.add_roles(role)
