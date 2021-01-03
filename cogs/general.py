@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping
-from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden
+from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden, TextChannel
 from discord.ext import commands, tasks
 import random
 from mcstatus import MinecraftServer
@@ -345,11 +345,12 @@ class General(Cog):
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
     @command()
-    async def quote(self, ctx: Context, message_id: Message, channel=None):
+    async def quote(self, ctx: Context, message_id, channel: TextChannel = None):
         """
         Quotes the specified message.
         """
-        message = message_id
+        channel = ctx if channel is None else channel
+        message = await channel.fetch_message(int(message_id))
         embed = Embed(
             description=f"{message.content}\n\n[Jump to message]({message.jump_url})",
             colour=Colour.blue(),
