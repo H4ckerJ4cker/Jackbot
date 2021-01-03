@@ -1,4 +1,4 @@
-from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping
+from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping, ChannelNotFound
 from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden, TextChannel
 from discord.ext import commands, tasks
 import random
@@ -349,19 +349,23 @@ class General(Cog):
         """
         Quotes the specified message.
         """
-        channel = ctx if channel is None else channel
-        message = await channel.fetch_message(int(message_id))
-        embed = Embed(
-            description=f"{message.content}\n\n[Jump to message]({message.jump_url})",
-            colour=Colour.blue(),
-            timestamp=message.created_at,
-        )
-        embed.set_image(url=message.attachments[0].url) if message.attachments else ...
-        embed.set_author(name=f"{message.author.name}#{message.author.discriminator}",
-                         icon_url=message.author.avatar_url)
-        embed.set_footer(text=f"{message.guild.name} | #{message.channel}")
+        try:
 
-        await ctx.send(embed=message.embeds[0] if message.embeds else embed)
+            channel = ctx if channel is None else channel
+            message = await channel.fetch_message(int(message_id))
+            embed = Embed(
+                description=f"{message.content}\n\n[Jump to message]({message.jump_url})",
+                colour=Colour.blue(),
+                timestamp=message.created_at,
+            )
+            embed.set_image(url=message.attachments[0].url) if message.attachments else ...
+            embed.set_author(name=f"{message.author.name}#{message.author.discriminator}",
+                             icon_url=message.author.avatar_url)
+            embed.set_footer(text=f"{message.guild.name} | #{message.channel}")
+
+            await ctx.send(embed=message.embeds[0] if message.embeds else embed)
+        except (ValueError, NotFound, AttributeError, ChannelNotFound):
+            await ctx.send(":no_entry_sign: Uh oh, quote not found :(")
 
     @Cog.listener()
     async def on_command_error(self, ctx, error):
