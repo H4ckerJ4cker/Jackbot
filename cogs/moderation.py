@@ -121,7 +121,7 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you!")
+            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.kick(reason=reason)
         await ctx.send(f"**{user.display_name}** was kicked for **{reason}**.")
@@ -151,7 +151,7 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you!")
+            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.ban(reason=reason)
         await ctx.send(f"**{user.display_name}** was banned for **{reason}**.")
@@ -218,7 +218,7 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you!")
+            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         guild = ctx.guild
         muted_role = utils.get(guild.roles, name="Muted")
@@ -260,7 +260,7 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you!")
+            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         muted_role = utils.get(user.roles, name="Muted")
         if muted_role is not None:
@@ -294,7 +294,7 @@ class Moderation(Cog):
         reason = "User blocked from channel"
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you!")
+            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         if channel is None:
             channel = ctx.channel
@@ -330,7 +330,7 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you!")
+            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         if channel is None:
             channel = ctx.channel
