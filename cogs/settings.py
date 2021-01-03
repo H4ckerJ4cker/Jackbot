@@ -102,7 +102,8 @@ class Settings(Cog):
                     self.bot.servers[ctx.guild.id] = {}
                 self.bot.servers[ctx.guild.id]["join_role_id"] = role.id
 
-                await ctx.send(f"When a member joins they will be given the role **{role.name}**.")
+                await ctx.send(f"When a member joins they will be given the role **{role.name}**. "
+                               f"(Tip: Make sure the JackBot role is above the autorole in the role list.)")
             else:
                 await ctx.send(f"The role, **{role_name}** was not found. No change")
         else:
