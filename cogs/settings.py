@@ -36,9 +36,12 @@ class Settings(Cog):
     @commands.has_permissions(manage_guild=True)
     async def setprefix(self, ctx, *, new_prefix=None):
         """
-        Set the prefix of the bot.
+        Set the prefix of the bot. Prefix cannot be longer than 5 characters.
         """
         if ctx.guild is not None:
+            if len(new_prefix) > 5:
+                await ctx.send("That prefix is too long. (Max 5 characters)")
+                return
             if new_prefix is None:
                 if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
