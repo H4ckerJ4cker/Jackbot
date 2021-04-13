@@ -51,7 +51,7 @@ class DiscordHandler(logging.Handler):
                     embed.add_field(name=field, value=value, inline=True)
     
             if self.log_channel is None:
-                self.log_channel = self.client.get_channel(772502152719499277)
+                self.log_channel = self.client.get_channel(831649393123393547)
     
             # Create a task in the event loop to send the logging embed
             self.client.loop.create_task(self.log_channel.send(embed=embed))
