@@ -51,9 +51,9 @@ class Fun(Cog):
         poll_embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
         poll_embed.set_footer(text=f"React bellow to vote.")
         poll = await poll_channel.send(embed=poll_embed)
-        await poll.add_reaction("<:yes:779124573286957078>")
-        await poll.add_reaction("<:neutral:779124664660131912>")
-        await poll.add_reaction("<:no:779124611643080734>")
+        await poll.add_reaction("<:yes:831665509454839890>")
+        await poll.add_reaction("<:neutral:831665552908615751>")
+        await poll.add_reaction("<:no:831665477104173057>")
 
 
 def setup(bot):
