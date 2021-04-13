@@ -22,7 +22,7 @@ class DiscordHandler(logging.Handler):
             super().__init__(*args, **kwargs)
     
             self.client = bot
-            self.log_channel = self.client.get_channel(772502152719499277)
+            self.log_channel = self.client.get_channel(831649393123393547)
     
         def _level_to_color(self, level_number: int):
             return LEVEL_COLORS.get(level_number)
