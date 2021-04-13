@@ -18,7 +18,6 @@ class General(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.status.start()
-        self.update_dbl.start()
 
     def cog_unload(self):
         self.status.cancel()
