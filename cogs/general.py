@@ -223,8 +223,8 @@ class General(Cog):
         await ctx.send(embed=embed)
 
     @command(aliases=['mc'])
-    @commands.cooldown(6, 120, BucketType.user)
-    @commands.cooldown(30, 1800, BucketType.guild)
+    @commands.cooldown(3, 120, BucketType.user)
+    @commands.cooldown(15, 1800, BucketType.guild)
     async def mcstatus(self, ctx, server_address):
         """
         Get information on a minecraft server.
