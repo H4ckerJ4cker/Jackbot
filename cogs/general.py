@@ -38,24 +38,7 @@ class General(Cog):
         activity_list = [activity_help, activity_guilds, activity_listening]
         await self.bot.change_presence(activity=random.choice(activity_list))
 
-    @tasks.loop(minutes=30)
-    async def update_dbl(self):
-        if not environ.get("TESTING"):
-            url = "https://top.gg/api/bots/758352287101353995/stats"
-            payload = {'server_count': len(self.bot.guilds)}
-            headers = {'Authorization': environ.get("DBL_TOKEN")}
-
-            async with aiohttp.ClientSession() as cs:
-                r = await cs.post(url, headers=headers, data=payload)
-                if r.status != 200:
-                    log = self.bot.get_channel(772502152719499277)
-                    await log.send(f"Updating server count on dbl failed with **{r.status}**.")
-
     @status.before_loop
-    async def before_printer(self):
-        await self.bot.wait_until_ready()
-
-    @update_dbl.before_loop
     async def before_printer(self):
         await self.bot.wait_until_ready()
 
