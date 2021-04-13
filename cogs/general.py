@@ -310,6 +310,7 @@ class General(Cog):
         await ctx.send(embed=embed)
 
     @command()
+    @commands.guild_only()
     async def prefix(self, ctx):
         """
         Get the current prefix.
