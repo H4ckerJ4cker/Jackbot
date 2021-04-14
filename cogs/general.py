@@ -5,7 +5,7 @@ import random
 from mcstatus import MinecraftServer
 import aiohttp
 from os import environ
-from typing import Optional
+from typing import Optional, Union
 import datetime
 
 
@@ -265,13 +265,15 @@ class General(Cog):
         await ctx.send(f"The current prefix is **{prefix}**.")
 
     @command()
-    async def quote(self, ctx: Context, message: MessageConverter, channel: TextChannel = None):
+    async def quote(self, ctx: Context, message: Union[MessageConverter, int], channel: Optional[TextChannel]):
         """
         Quotes the specified message.
         """
         try:
-
-            channel = ctx if channel is None else channel
+            if isinstance(message, int):
+                channel = ctx if channel is None else channel
+                message = await channel.fetch_message(int(message)
+                                                      
             embed = Embed(
                 description=f"{message.content}\n\n[Jump to message]({message.jump_url})",
                 colour=Colour.blue(),
