@@ -265,14 +265,13 @@ class General(Cog):
         await ctx.send(f"The current prefix is **{prefix}**.")
 
     @command()
-    async def quote(self, ctx: Context, message_id, channel: Optional[TextChannel] = None):
+    async def quote(self, ctx: Context, message: MessageConverter, channel: Optional[TextChannel]):
         """
         Quotes the specified message.
         """
         try:
 
             channel = ctx if channel is None else channel
-            message = await channel.fetch_message(int(message_id))
             embed = Embed(
                 description=f"{message.content}\n\n[Jump to message]({message.jump_url})",
                 colour=Colour.blue(),
