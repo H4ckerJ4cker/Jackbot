@@ -33,7 +33,7 @@ async def run():
         db = await asyncpg.create_pool(**credentials)
         bot = Bot(command_prefix=get_prefix, intents=intents)
         bot.db = db
-        bot.logging = bot.get_channel(831649393123393547)
+        bot.logging_channel = bot.get_channel(831649393123393547)
         async def get_prefixes():
             await bot.wait_until_ready()
 
