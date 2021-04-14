@@ -272,7 +272,7 @@ class General(Cog):
         try:
             if isinstance(message, int):
                 channel = ctx if channel is None else channel
-                message = await channel.fetch_message(int(message)
+                message = await channel.fetch_message(int(message))
                                                       
             embed = Embed(
                 description=f"{message.content}\n\n[Jump to message]({message.jump_url})",
