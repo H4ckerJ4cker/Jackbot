@@ -12,7 +12,7 @@ intents.members = True
 intents.messages = True
 
 await bot.wait_until_ready()
-        bot.logging_channel = bot.get_channel(831649393123393547)
+bot.logging_channel = bot.get_channel(831649393123393547)
 
 async def get_prefix(bot, message):
     try:
