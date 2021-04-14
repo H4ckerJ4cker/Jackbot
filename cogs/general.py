@@ -50,7 +50,7 @@ class General(Cog):
             "free to send a message to the support server. To see all my available commands you can run ``!help`` and "
             "I will send you a DM. To find out how to customise me for your server run ``!settings`` for a list of "
             "settings you can change. If you need any help feel free to ask in my support server. Thank you for "
-            "choosing JackBot, your no fuss bot for small servers :) https://discord.gg/t58T4mU9v9 "
+            "choosing JackBot, your no fuss bot for small servers :) https://discord.gg/zVCBqP5FVS"
         )
         try:
             await general.send(join_msg)
@@ -165,8 +165,8 @@ class General(Cog):
             color=Colour.blue(),
             title="Pong!",
         )
-
-        embed.add_field(name="Members", value=guild.member_count, inline=False)
+        if ctx.guild is not None:
+            embed.add_field(name="Server Member Count", value=guild.member_count, inline=False)
         embed.add_field(name="Bot latency", value=f"{round(self.bot.latency * 1000)}ms", inline=False)
         embed.set_footer(icon_url=self.bot.user.avatar_url, text="Serving servers since 2020.")
         await ctx.send(embed=embed)
@@ -227,15 +227,7 @@ class General(Cog):
         """
         Sends an invite link to the support server for the bot.
         """
-        await ctx.send("https://discord.gg/t58T4mU9v9")
-
-    @command()
-    async def vote(self, ctx):
-        """
-        Sends an link to a page where you can vote for the bot to help it grow.
-        """
-        await ctx.send("Vote for me on top.gg to get a fancy role in my support server (use ``@JackBot support`` for "
-                       "an invite), https://top.gg/bot/758352287101353995/vote")
+        await ctx.send("https://discord.gg/zVCBqP5FVS")
 
     @command()
     async def invite(self, ctx):
@@ -322,6 +314,10 @@ class General(Cog):
             retry_after = round(error.retry_after)
             return await ctx.send(
                 f"\N{HOURGLASS} Command is on cooldown, try again after **{retry_after}** seconds."
+            )
+        elif isinstance(error, commands.NoPrivateMessage):
+            return await ctx.send(
+                f"\N{NO ENTRY SIGN} That command is only available in servers."
             )
         elif isinstance(error, commands.MemberNotFound):
             return await ctx.send("⚠️ Member not found, please try again.")
