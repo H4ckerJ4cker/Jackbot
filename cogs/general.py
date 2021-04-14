@@ -265,7 +265,7 @@ class General(Cog):
         await ctx.send(f"The current prefix is **{prefix}**.")
 
     @command()
-    async def quote(self, ctx: Context, message: MessageConverter, channel: Optional[TextChannel]):
+    async def quote(self, ctx: Context, message: MessageConverter, channel: TextChannel = None):
         """
         Quotes the specified message.
         """
