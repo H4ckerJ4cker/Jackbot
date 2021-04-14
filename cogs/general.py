@@ -1,4 +1,4 @@
-from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping, ChannelNotFound
+from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping, ChannelNotFound, EmojiConverter, MessageConverter
 from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden, TextChannel
 from discord.ext import commands, tasks
 import random
