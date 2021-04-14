@@ -172,7 +172,7 @@ class General(Cog):
     @command(aliases=['mc'])
     @commands.cooldown(3, 120, BucketType.user)
     @commands.cooldown(15, 1800, BucketType.guild)
-    async def mcstatus(self, ctx, server_address):
+    async def mcstatus(self, ctx, server_address, port = 25565):
         """
         Get information on a minecraft server.
         """
@@ -183,7 +183,7 @@ class General(Cog):
         )
         loading_message = await ctx.send(embed=online_embed)
         try:
-            server = MinecraftServer(str(server_address), 25565)
+            server = MinecraftServer(str(server_address), port)
             status = server.status()
             online = status.players.online
             max_players = status.players.max
@@ -254,18 +254,15 @@ class General(Cog):
         """
         Get the current prefix.
         """
-        if ctx.guild is not None:
-            if ctx.guild.id not in self.bot.servers:
-                self.bot.servers[ctx.guild.id] = {}
-            dbprefix = self.bot.servers[ctx.guild.id].get("prefix")
-            if dbprefix is None:
-                prefix = '!'
-            else:
-                prefix = dbprefix
-
-            await ctx.send(f"The current prefix is **{prefix}**.")
+        if ctx.guild.id not in self.bot.servers:
+            self.bot.servers[ctx.guild.id] = {}
+        dbprefix = self.bot.servers[ctx.guild.id].get("prefix")
+        if dbprefix is None:
+            prefix = '!'
         else:
-            await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
+            prefix = dbprefix
+
+        await ctx.send(f"The current prefix is **{prefix}**.")
 
     @command()
     async def quote(self, ctx: Context, message_id, channel: Optional[TextChannel] = None):
