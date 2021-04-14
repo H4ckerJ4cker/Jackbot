@@ -56,8 +56,7 @@ class General(Cog):
             await general.send(join_msg)
         except AttributeError:
             await guild.owner.send(join_msg)
-        log = self.bot.get_channel(772502152719499277)
-        await log.send(f"I just joined **{guild.name}**")
+        await bot.logging_channel.send(f"I just joined **{guild.name}**")
 
     @Cog.listener()
     async def on_member_join(self, member):
@@ -74,8 +73,7 @@ class General(Cog):
             "DELETE FROM guilds WHERE guild_id = $1",
             guild.id
         )
-        log = self.bot.get_channel(772502152719499277)
-        await log.send(f"I just left **{guild.name}**")
+        await bot.logging_channel.send(f"I just left **{guild.name}**")
 
     cd_mapping = CooldownMapping.from_cooldown(3, 60, BucketType.member)
     cd_mapping_bot = CooldownMapping.from_cooldown(1, 60, BucketType.member)
