@@ -11,9 +11,6 @@ intents = Intents.default()
 intents.members = True
 intents.messages = True
 
-await bot.wait_until_ready()
-bot.logging_channel = bot.get_channel(831649393123393547)
-
 async def get_prefix(bot, message):
     try:
         if message.guild is not None:
@@ -36,8 +33,9 @@ async def run():
         bot = Bot(command_prefix=get_prefix, intents=intents)
         bot.db = db
         
-        async def get_prefixes():
+        async def get_tables():
             await bot.wait_until_ready()
+            bot.logging_channel = bot.get_channel(831649393123393547)
 
             servers = {}
             for guild in bot.guilds:
@@ -74,7 +72,7 @@ async def run():
         logger.addHandler(DiscordHandler(bot))
         logger.setLevel(logging.INFO)
         bot.log = logger
-        bot.loop.create_task(get_prefixes())
+        bot.loop.create_task(get_tables())
     else:
         bot = Bot(command_prefix='!', activity=Game(name="@JackBot help"), intents=intents)
         # logger.addHandler(DiscordHandler(bot))
