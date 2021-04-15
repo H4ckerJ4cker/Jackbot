@@ -253,11 +253,11 @@ class General(Cog):
         """
         embed = Embed(
             color=Colour.blue(),
-            title="Add JackBot to Your Server",
+            title="Invite JackBot",
+            description="[**Click here**](https://pwnker.com/jackbot) to add JackBot to your server."
         )
 
         embed.set_footer(icon_url=self.bot.user.avatar_url, text="Serving servers since 2020.")
-        embed.add_field(name="Invite me", value="[**Click here**](https://pwnker.com/jackbot) to add JackBot to your server.", inline=True)
         await ctx.send(embed=embed)
 
     @command()
