@@ -147,14 +147,11 @@ class General(Cog):
 
     @Cog.listener()
     async def on_message_edit(self, before, after):
-        if before.guild is None:
+        if before.guild is None or before.content == after.content or log_channel_id is None or before.author.bot is True:
             return
         if before.guild.id not in self.bot.servers:
             self.bot.servers[before.guild.id] = {}
         log_channel_id = self.bot.servers[before.guild.id].get("logging_channel_id")
-
-        if log_channel_id is None or before.author.bot is True:
-            return
         else:
             log_channel = self.bot.get_channel(log_channel_id)
             if before.author.id != self.bot.user.id:
