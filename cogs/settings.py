@@ -32,7 +32,7 @@ class Settings(Cog):
 
         await ctx.send(embed=embed)
 
-    @settings.command(aliases=['prefix', 'newprefix'])
+    @settings.command(aliases=['setprefix', 'newprefix'])
     @commands.has_permissions(manage_guild=True)
     async def prefix(self, ctx, *, new_prefix=None):
         """
@@ -112,7 +112,7 @@ class Settings(Cog):
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
-    @settings.command(aliases=['polls', 'pollschannel'])
+    @settings.command(aliases=['setpolls', 'pollschannel'])
     @commands.has_permissions(manage_guild=True)
     async def polls(self, ctx, *, poll_channel: typing.Union[TextChannel, str] = None):
         """
@@ -213,9 +213,9 @@ class Settings(Cog):
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
 
-    @settings.command(aliases=['welcome', 'join', 'setwelcomechannel'])
+    @settings.command(aliases=['welcomechannel', 'join', 'setwelcomechannel'])
     @commands.has_permissions(manage_guild=True)
-    async def welcomechannel(self, ctx, *, welcome_channel: typing.Union[TextChannel, str] = None):
+    async def welcome(self, ctx, *, welcome_channel: typing.Union[TextChannel, str] = None):
         """
         Set the welcome channel where join and leave messages will be sent. If you pass in "reset" the welcome channel will be reset.
         """
