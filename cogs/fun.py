@@ -13,7 +13,7 @@ class Fun(Cog):
         self.bot = bot
 
     @command(hidden=True)
-    @command.is_owner()
+    @commands.is_owner()
     async def send(self, ctx, emote: Optional[EmojiConverter] = None, *, text):
         """
         Sends a message as the bot.
@@ -24,7 +24,7 @@ class Fun(Cog):
             await message.add_reaction(emote)
 
     @command(hidden=True)
-    @command.is_owner()
+    @commands.is_owner()
     async def react(self, ctx, emote: EmojiConverter, message: MessageConverter):
         """
         reacts to messaage.
