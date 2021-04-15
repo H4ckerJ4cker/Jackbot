@@ -4,6 +4,7 @@ from os import environ
 import asyncpg
 import asyncio
 import logging
+import time
 from log import DiscordHandler
 
 logger = logging.getLogger(__name__)
@@ -32,10 +33,13 @@ async def run():
         db = await asyncpg.create_pool(**credentials)
         bot = Bot(command_prefix=get_prefix, intents=intents)
         bot.db = db
+        await bot.wait_until_ready()
+            # set global vars
+            bot.logging_channel = bot.get_channel(831649393123393547)
+            bot.time_start = time.time()
         
         async def get_tables():
             await bot.wait_until_ready()
-            bot.logging_channel = bot.get_channel(831649393123393547)
 
             servers = {}
             for guild in bot.guilds:
