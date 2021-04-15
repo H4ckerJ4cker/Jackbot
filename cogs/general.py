@@ -61,9 +61,9 @@ class General(Cog):
     @Cog.listener()
     async def on_member_join(self, member):
         # Welcome message
-        if ctx.guild.id not in self.bot.servers:
-            self.bot.servers[ctx.guild.id] = {}
-        welcome_channel_id = self.bot.servers[ctx.guild.id].get("welcome_channel_id")
+        if member.guild.id not in self.bot.servers:
+            self.bot.servers[member.guild.id] = {}
+        welcome_channel_id = self.bot.servers[member.guild.id].get("welcome_channel_id")
         welcome_channel = self.bot.get_channel(welcome_channel_id)
         join_msg = await welcome_channel.send(f"Welcome to **{member.guild.name}** {member.mention}!")
         await join_msg.add_reaction('👋')
@@ -78,9 +78,9 @@ class General(Cog):
     @Cog.listener()
     async def on_member_remove(self, member):
     # Leave message
-        if ctx.guild.id not in self.bot.servers:
-            self.bot.servers[ctx.guild.id] = {}
-        welcome_channel_id = self.bot.servers[ctx.guild.id].get("welcome_channel_id")
+        if member.guild.id not in self.bot.servers:
+            self.bot.servers[member.guild.id] = {}
+        welcome_channel_id = self.bot.servers[member.guild.id].get("welcome_channel_id")
         welcome_channel = self.bot.get_channel(welcome_channel_id)
         leave_msg = await welcome_channel.send(f"{member.mention} just left **{member.guild.name}**, sorry to see you go.")   
 
