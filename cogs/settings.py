@@ -252,7 +252,7 @@ class Settings(Cog):
                 )
                 if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
-                self.bot.servers[ctx.guild.id]["logging_channel_id"] = welcome_channel.id
+                self.bot.servers[ctx.guild.id]["welcome_channel_id"] = welcome_channel.id
 
                 await ctx.send(f"Welcome channel set to <#{welcome_channel.id}>")
             else:
