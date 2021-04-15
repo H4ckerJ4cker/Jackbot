@@ -61,13 +61,13 @@ async def run():
                 )
                 servers[guild.id]["logging_channel_id"] = logging_channel_id
 
-                poll_channel = await bot.db.fetchval(
+                poll_channel_id = await bot.db.fetchval(
                     "SELECT poll_channel_id FROM guilds WHERE guild_id = $1",
                     guild.id,
                 )
-                servers[guild.id]["poll_channel_id"] = poll_channel
+                servers[guild.id]["poll_channel_id"] = poll_channel_id
                 
-                welcome_channel = await bot.db.fetchval(
+                welcome_channel_id = await bot.db.fetchval(
                     "SELECT welcome_channel_id FROM guilds WHERE guild_id = $1",
                     guild.id,
                 )
