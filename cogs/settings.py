@@ -246,7 +246,7 @@ class Settings(Cog):
             elif type(welcome_channel) == TextChannel:
                 await self.bot.db.execute(
                     "INSERT INTO guilds(guild_id, welcome_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
-                    "logging_channel_id = $2",
+                    "welcome_channel_id = $2",
                     ctx.guild.id,
                     welcome_channel.id,
                 )
