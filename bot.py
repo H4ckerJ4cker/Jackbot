@@ -83,7 +83,7 @@ async def run():
         logger.addHandler(DiscordHandler(bot))
         logger.setLevel(logging.INFO)
         bot.log = logger
-        bot.loop.create_task(get_tables())
+        bot.loop.create_task(get_vars())
     else:
         bot = Bot(command_prefix='!', activity=Game(name="@JackBot help"), intents=intents)
         # logger.addHandler(DiscordHandler(bot))
