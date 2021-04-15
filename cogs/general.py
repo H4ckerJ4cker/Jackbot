@@ -63,10 +63,11 @@ class General(Cog):
         # Welcome message
         if member.guild.id not in self.bot.servers:
             self.bot.servers[member.guild.id] = {}
-        welcome_channel_id = self.bot.servers[member.guild.id].get("welcome_channel_id")
-        welcome_channel = self.bot.get_channel(welcome_channel_id)
-        join_msg = await welcome_channel.send(f"Welcome to **{member.guild.name}** {member.mention}!")
-        await join_msg.add_reaction('👋')
+        if welcome_channel_id is not None:
+            welcome_channel_id = self.bot.servers[member.guild.id].get("welcome_channel_id")
+            welcome_channel = self.bot.get_channel(welcome_channel_id)
+            join_msg = await welcome_channel.send(f"Welcome to **{member.guild.name}** {member.mention}!")
+            await join_msg.add_reaction('👋')
         # Autorole
         if member.guild.id not in self.bot.servers:
             self.bot.servers[member.guild.id] = {}
@@ -80,9 +81,10 @@ class General(Cog):
     # Leave message
         if member.guild.id not in self.bot.servers:
             self.bot.servers[member.guild.id] = {}
-        welcome_channel_id = self.bot.servers[member.guild.id].get("welcome_channel_id")
-        welcome_channel = self.bot.get_channel(welcome_channel_id)
-        leave_msg = await welcome_channel.send(f"{member.mention} just left **{member.guild.name}**, sorry to see you go.")   
+        if welcome_channel_id is not None:
+            welcome_channel_id = self.bot.servers[member.guild.id].get("welcome_channel_id")
+            welcome_channel = self.bot.get_channel(welcome_channel_id)
+            leave_msg = await welcome_channel.send(f"{member.mention} just left **{member.guild.name}**, sorry to see you go.")   
 
     @Cog.listener()
     async def on_guild_remove(self, guild):
