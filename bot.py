@@ -66,6 +66,12 @@ async def run():
                     guild.id,
                 )
                 servers[guild.id]["poll_channel_id"] = poll_channel
+                
+                welcome_channel = await bot.db.fetchval(
+                    "SELECT welcome_channel_id FROM guilds WHERE guild_id = $1",
+                    guild.id,
+                )
+                servers[guild.id]["welcome_channel_id"] = welcome_channel_id
 
             bot.servers = servers
 
