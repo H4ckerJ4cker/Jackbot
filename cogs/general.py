@@ -178,7 +178,7 @@ class General(Cog):
         # uptime
         time_now = time.time()
         time_difference = int(round(time_now - self.bot.time_start))
-        uptime = str(datetime.timedelta(seconds=difference))
+        uptime = str(datetime.timedelta(seconds=time_difference))
         # embed
         guild = ctx.guild
         embed = Embed(
