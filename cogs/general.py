@@ -188,7 +188,7 @@ class General(Cog):
         if ctx.guild is not None:
             embed.add_field(name="Server Member Count", value=guild.member_count, inline=False)
         embed.add_field(name="Bot latency", value=f"{round(self.bot.latency * 1000)}ms", inline=False)
-        embed.add_field(name="Uptime", value=f"{uptime}", inline=False)
+        embed.add_field(name="Bot Uptime", value=f"{uptime}", inline=False)
         embed.set_footer(icon_url=self.bot.user.avatar_url, text="Serving servers since 2020.")
         await ctx.send(embed=embed)
 
