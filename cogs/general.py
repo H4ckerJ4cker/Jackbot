@@ -7,6 +7,7 @@ import aiohttp
 from os import environ
 from typing import Optional, Union
 import datetime
+import time
 
 
 class General(Cog):
@@ -172,8 +173,13 @@ class General(Cog):
     @command()
     async def ping(self, ctx):
         """
-        Checks the bot is online and returns the number of members in the server.
+        Returns some info about the bot and the number of members in the server.
         """
+        # uptime
+        time_now = time.time()
+        time_difference = int(round(time_now - self.bot.time_start))
+        uptime = str(datetime.timedelta(seconds=difference))
+        # embed
         guild = ctx.guild
         embed = Embed(
             color=Colour.blue(),
@@ -182,6 +188,7 @@ class General(Cog):
         if ctx.guild is not None:
             embed.add_field(name="Server Member Count", value=guild.member_count, inline=False)
         embed.add_field(name="Bot latency", value=f"{round(self.bot.latency * 1000)}ms", inline=False)
+        embed.add_field(name="Uptime", value=f"{uptime}", inline=False)
         embed.set_footer(icon_url=self.bot.user.avatar_url, text="Serving servers since 2020.")
         await ctx.send(embed=embed)
 
