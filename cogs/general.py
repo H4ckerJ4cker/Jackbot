@@ -147,27 +147,27 @@ class General(Cog):
 
     @Cog.listener()
     async def on_message_edit(self, before, after):
-        if before.guild is None or before.content == after.content or log_channel_id is None or before.author.bot is True:
-            return
         if before.guild.id not in self.bot.servers:
             self.bot.servers[before.guild.id] = {}
         log_channel_id = self.bot.servers[before.guild.id].get("logging_channel_id")
-        else:
-            log_channel = self.bot.get_channel(log_channel_id)
-            if before.author.id != self.bot.user.id:
+        log_channel = self.bot.get_channel(log_channel_id)
+        if before.guild is None or before.content == after.content or log_channel_id is None or before.author.bot is True:
+            return
+            
+        if before.author.id != self.bot.user.id:
 
-                message_embed = Embed(
-                    color=Colour.orange(),
-                    title="Message Edited",
-                )
-                message_embed.add_field(name="Channel", value=f"<#{before.channel.id}>")
-                message_embed.add_field(name="Message", value=f"[**Jump to message.**]({after.jump_url})", inline=False)
-                if before.content:
-                    message_embed.add_field(name="Message Before", value=before.content, inline=False)
-                if after.content:
-                    message_embed.add_field(name="Message After", value=after.content, inline=False)
-                message_embed.add_field(name="Author", value=before.author.mention, inline=False)
-                await log_channel.send(embed=message_embed)
+            message_embed = Embed(
+                color=Colour.orange(),
+                title="Message Edited",
+            )
+            message_embed.add_field(name="Channel", value=f"<#{before.channel.id}>")
+            message_embed.add_field(name="Message", value=f"[**Jump to message.**]({after.jump_url})", inline=False)
+            if before.content:
+                message_embed.add_field(name="Message Before", value=before.content, inline=False)
+            if after.content:
+                message_embed.add_field(name="Message After", value=after.content, inline=False)
+            message_embed.add_field(name="Author", value=before.author.mention, inline=False)
+            await log_channel.send(embed=message_embed)
 
     @command()
     async def ping(self, ctx):
