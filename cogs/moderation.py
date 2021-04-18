@@ -49,6 +49,45 @@ class Moderation(Cog):
             log_channel = self.bot.get_channel(log_channel_id)
             await log_channel.send(embed=embed)
 
+    @command()
+    @commands.has_permissions(manage_channels=True)
+    async def slowmode(self, ctx, channel: Optional[TextChannel], delay: int):
+        """
+        Turn on slowmode for a channel.
+        """
+        if channel is None:
+            channel = ctx.channel
+            await ctx.message.delete()
+        else:
+            await ctx.message.add_reaction("✅")
+
+        await channel.edit(reason="Slowmode", slowmode_delay=delay)
+        embed = Embed(
+            color=Colour.green(),
+            title=f":white_check_mark: Slowmode set to {delay}s",
+        )
+        await channel.send(embed=embed)
+
+        # logging
+        if ctx.guild.id not in self.bot.servers:
+            self.bot.servers[ctx.guild.id] = {}
+        log_channel_id = self.bot.servers[ctx.message.guild.id].get("logging_channel_id")
+
+        if log_channel_id is not None:
+            embed = Embed(
+                color=Colour.orange(),
+                title="Slowmode Edited",
+            )
+            embed.add_field(name="Channel", value=f"<#{ctx.channel.id}>")
+            embed.add_field(name="Moderator", value=ctx.message.author.mention)
+            embed.add_field(name="Delay", value=f"{delay}s")
+
+            log_channel = self.bot.get_channel(log_channel_id)
+            await log_channel.send(embed=embed)
+
+
+
+
     @command(aliases=['m'])
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))
     async def mutevc(self, ctx):
