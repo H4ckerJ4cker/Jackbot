@@ -28,10 +28,10 @@ class Moderation(Cog):
             return message.author == user
 
         if user is None:
-            await ctx.channel.purge(limit=amount + 1)
+            purged = await ctx.channel.purge(limit=amount + 1)
         else:
             await ctx.message.delete()
-            await ctx.channel.purge(limit=amount + 1, check=user_check)
+            purged = await ctx.channel.purge(limit=amount + 1, check=user_check)
 
         # logging
         if ctx.guild.id not in self.bot.servers:
@@ -42,7 +42,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="Messages Purged",
-                description=f"**{amount}** messages were purged."
+                description=f"**{len(purged)}** messages were purged."
             )
             embed.add_field(name="Channel", value=f"<#{ctx.channel.id}>")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)

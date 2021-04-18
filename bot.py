@@ -86,7 +86,7 @@ async def run():
         bot.loop.create_task(get_vars())
     else:
         bot = Bot(command_prefix='!', activity=Game(name="@JackBot help"), intents=intents)
-        # logger.addHandler(DiscordHandler(bot))
+        bot.servers = {}
         logger.setLevel(logging.INFO)
         bot.log = logger
     bot.load_extension("cogs.general")
