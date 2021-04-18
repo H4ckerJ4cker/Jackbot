@@ -45,7 +45,7 @@ class Fun(Cog):
         )
         for guild in self.bot.guilds:
             embed.add_field(name=guild.name, value=f"Members: {guild.member_count}"
-                                                   f"\nOwner: {guild.owner.mention}"
+                                                   f"\nOwner: {guild.owner.name}#{guild.owner.discriminator}"
                                                    f"\n Created on: {guild.created_at.date()}")
         await ctx.send(embed=embed)
 
