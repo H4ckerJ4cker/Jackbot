@@ -52,7 +52,7 @@ class Fun(Cog):
 
     @command(hidden=True)
     @commands.is_owner()
-    async def leave(self, ctx, guild: GuildConverter):
+    async def leave(self, ctx, *, guild: GuildConverter):
         await guild.leave()
         await ctx.message.add_reaction("✅")
 
