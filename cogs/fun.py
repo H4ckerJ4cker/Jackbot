@@ -44,7 +44,9 @@ class Fun(Cog):
             description=f"Guilds I'm in..."
         )
         for guild in self.bot.guilds:
-            embed.add_field(name=guild.name, value=f"Members: {guild.member_count}")
+            embed.add_field(name=guild.name, value=f"Members: {guild.member_count}"
+                                                   f"\nOwner: {guild.owner.mention}"
+                                                   f"\n Created on: {guild.created_at.date()}")
         await ctx.send(embed=embed)
 
 

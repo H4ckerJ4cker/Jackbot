@@ -51,20 +51,30 @@ class Moderation(Cog):
 
     @command()
     @commands.has_permissions(manage_channels=True)
-    async def slowmode(self, ctx, channel: Optional[TextChannel], delay: int):
+    async def slowmode(self, ctx, channel: Optional[TextChannel], delay: Union[int, str]):
         """
-        Turn on slowmode for a channel.
+        Turn on slowmode for a channel. Pass in a number of seconds to set the slowmode or ``off`` to disable slowmode.
         """
+        if type(delay) == str and delay != "off" or type(delay) == int and delay > 21600:
+            await ctx.send("\N{NO ENTRY SIGN} Invalid slowmode setting!")
+            return
+
         if channel is None:
             channel = ctx.channel
             await ctx.message.delete()
         else:
             await ctx.message.add_reaction("✅")
 
+        if delay == 0 or delay == "off":
+            delay = 0
+            message = "Slowmode disabled"
+        else:
+            message = f"Slowmode set to {delay}s"
+
         await channel.edit(reason="Slowmode", slowmode_delay=delay)
         embed = Embed(
             color=Colour.green(),
-            title=f":white_check_mark: Slowmode set to {delay}s",
+            title=f":white_check_mark: {message}",
         )
         await channel.send(embed=embed)
 
@@ -78,7 +88,7 @@ class Moderation(Cog):
                 color=Colour.orange(),
                 title="Slowmode Edited",
             )
-            embed.add_field(name="Channel", value=f"<#{ctx.channel.id}>")
+            embed.add_field(name="Channel", value=f"<#{channel.id}>")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             embed.add_field(name="Delay", value=f"{delay}s")
 
