@@ -42,7 +42,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="Messages Purged",
-                description=f"**{len(purged)}** messages were purged."
+                description=f"**{len(purged) - 1}** messages were purged."
             )
             embed.add_field(name="Channel", value=f"<#{ctx.channel.id}>")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
