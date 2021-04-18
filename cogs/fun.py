@@ -1,6 +1,6 @@
 from discord.ext.commands import Cog, command, Context, EmojiConverter, MessageConverter
 from discord.ext import commands
-from discord import Embed
+from discord import Embed, Colour
 from typing import Optional
 
 
@@ -31,6 +31,23 @@ class Fun(Cog):
         """
         await ctx.message.delete()
         await message.add_reaction(emote)
+
+    @command(hidden=True)
+    @commands.is_owner()
+    async def guilds(self, ctx):
+        """
+        Lists guilds.
+        """
+        embed = Embed(
+            color=Colour.blue(),
+            title="Guild List",
+            description=f"Guilds I'm in..."
+        )
+        for guild in self.bot.guilds:
+            embed.add_field(name=guild.name, value=f"Members: {guild.member_count}")
+        await ctx.send(embed=embed)
+
+
 
     @command()
     async def poll(self, ctx: Context, *, poll_question: str):
