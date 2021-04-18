@@ -1,4 +1,4 @@
-from discord.ext.commands import Cog, command, Context, EmojiConverter, MessageConverter
+from discord.ext.commands import Cog, command, Context, EmojiConverter, MessageConverter, GuildConverter
 from discord.ext import commands
 from discord import Embed, Colour
 from typing import Optional
@@ -46,8 +46,16 @@ class Fun(Cog):
         for guild in self.bot.guilds:
             embed.add_field(name=guild.name, value=f"Members: {guild.member_count}"
                                                    f"\nOwner: {guild.owner.name}#{guild.owner.discriminator}"
-                                                   f"\n Created on: {guild.created_at.date()}")
+                                                   f"\nCreated on: {guild.created_at.date()}"
+                                                   f"\nID: {guild.id}")
         await ctx.send(embed=embed)
+
+    @command(hidden=True)
+    @commands.is_owner()
+    async def leave(self, ctx, guild: GuildConverter):
+        await guild.leave()
+        await ctx.message.add_reaction("✅")
+
 
 
 
