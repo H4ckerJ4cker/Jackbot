@@ -25,6 +25,15 @@ class Fun(Cog):
 
     @command(hidden=True)
     @commands.is_owner()
+    async def restart(self, ctx):
+        """
+        Restarts the bot and pulls in the latest changes.
+        """
+        await ctx.send("Restarting and pulling latest changes into production...")
+        await self.bot.close()
+
+    @command(hidden=True)
+    @commands.is_owner()
     async def react(self, ctx, emote: EmojiConverter, message: MessageConverter):
         """
         reacts to messaage.
