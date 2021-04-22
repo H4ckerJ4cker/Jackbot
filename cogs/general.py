@@ -16,6 +16,7 @@ class General(Cog):
     """
 
     def __init__(self, bot):
+        self.lock = False
         self.bot = bot
         self.status.start()
 
@@ -28,6 +29,9 @@ class General(Cog):
         print(self.bot.user.name)
         print(self.bot.user.id)
         print("------")
+        if not self.lock:
+            await self.bot.logging_channel.send("✅ Bot Started!")
+        self.bot.lock = True
 
     @tasks.loop(seconds=125)
     async def status(self):
@@ -343,6 +347,10 @@ JackBot has various features to help you automate your server, such as autorole 
             missing = error.missing_perms
             return await ctx.send(
                 f"\N{NO ENTRY SIGN} You are missing the permission **{' '.join(str(x) for x in missing)}**"
+            )
+        elif isinstance(error, commands.NotOwner):
+            return await ctx.send(
+                f"\N{NO ENTRY SIGN} That is a command for JackBot developers only!"
             )
         elif isinstance(error, commands.CommandOnCooldown):
             retry_after = round(error.retry_after)
