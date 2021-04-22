@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+  bot:
+    build: .
+    depends_on:
+      - db
+    environment:
+      PGUSER: bot
+      PGPASSWORD: 
+      PGDATABASE: bot
+      PGHOST: db
+      BOT_TOKEN:
+    networks:
+      - default
+    restart: always
+
+  db:
+    environment:
+      POSTGRES_USER: bot
+      POSTGRES_PASSWORD:
+      POSTGRES_DB: bot
+    image: postgres:latest
+    networks:
+      - default
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
