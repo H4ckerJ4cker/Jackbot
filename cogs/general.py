@@ -200,7 +200,7 @@ class General(Cog):
         Get information on a minecraft server.
         """
         online_embed = Embed(
-            title=f"{server_address} Status mate",
+            title=f"{server_address} Status",
             colour=Colour.orange(),
             description="**Loading...**"
         )
