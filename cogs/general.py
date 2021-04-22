@@ -249,7 +249,7 @@ class General(Cog):
         Get some basic info about the bot.
         """
         embed = Embed (
-            title="Hi, I'm JackBot",
+            title="Hi, I'm JackBott",
             description="""
             JackBot is a breath of fresh air for small discord servers who need a simple bot to help run their server smoothly without having to deal with complex web panels and configuration. If you have a small community and need to do a bit more as an admin than the built in discord functions, JackBot is for you.
 
