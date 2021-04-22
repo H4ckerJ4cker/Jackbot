@@ -65,9 +65,6 @@ class Fun(Cog):
         await guild.leave()
         await ctx.message.add_reaction("✅")
 
-
-
-
     @command()
     async def poll(self, ctx: Context, *, poll_question: str):
         """
