@@ -168,6 +168,7 @@ class Moderation(Cog):
         """
         Kick a member from the server.
         """
+        await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
             await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
@@ -198,6 +199,7 @@ class Moderation(Cog):
         """
         Bans a member from the server.
         """
+        await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
             await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
@@ -265,6 +267,7 @@ class Moderation(Cog):
         """
         Mutes a member.
         """
+        await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
             await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
@@ -307,6 +310,7 @@ class Moderation(Cog):
         """
         Unmutes a member. Does not affect users blocked from channels.
         """
+        await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
             await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
@@ -340,6 +344,7 @@ class Moderation(Cog):
         Block a member from speaking in a channel.
         If no channel is specified the user will be blocked in the channel the command was initiated in.
         """
+        await ctx.message.delete()
         reason = "User blocked from channel"
         check = perms(ctx, user)
         if check is not True:
@@ -349,11 +354,11 @@ class Moderation(Cog):
             channel = ctx.channel
         if channel.type == ChannelType.text:
             await channel.set_permissions(user, send_messages=False, reason=reason)
-            await ctx.send(f"**{user.display_name}** can no longer send messages in the channel {channel.mention}.")
+            await ctx.send(f"**{user.mention}** can no longer send messages in the channel {channel.mention}.")
         elif channel.type == ChannelType.voice:
             await channel.set_permissions(user, speak=False, reason=reason)
             await ctx.send(
-                f"**{user.display_name}** can no longer speak in the voice channel **{channel.name}**.")
+                f"**{user.mention}** can no longer speak in the voice channel **{channel.name}**.")
         # logging
         if ctx.guild.id not in self.bot.servers:
             self.bot.servers[ctx.guild.id] = {}
@@ -377,6 +382,7 @@ class Moderation(Cog):
         """
         Unblock a user, allowing them to speak in a channel again. Does not affect muted users.
         """
+        await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
             await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
@@ -385,9 +391,9 @@ class Moderation(Cog):
             channel = ctx.channel
         await channel.set_permissions(user, overwrite=None, reason="User unblocked from channel")
         if channel.type == ChannelType.text:
-            await ctx.send(f"**{user.display_name}** can now send messages in the channel {channel.mention} again.")
+            await ctx.send(f"**{user.mention}** can now send messages in the channel {channel.mention} again.")
         elif channel.type == ChannelType.voice:
-            await ctx.send(f"**{user.display_name}** can now speak in the voice channel **{channel.name}** again.")
+            await ctx.send(f"**{user.mention}** can now speak in the voice channel **{channel.name}** again.")
 
         # logging
         if ctx.guild.id not in self.bot.servers:
