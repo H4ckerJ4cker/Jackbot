@@ -280,7 +280,7 @@ class Moderation(Cog):
         if muted_role is None:
             muted_role = await guild.create_role(name="Muted")
         await user.add_roles(muted_role, reason=reason)
-        await ctx.send(f"**{user.display_name}** was muted for **{reason}**.")
+        await ctx.send(f"**{user.mention}** was muted for **{reason}**.")
         for channel in guild.channels:
             if channel.type == ChannelType.text:
                 await channel.set_permissions(muted_role, send_messages=False)
@@ -318,7 +318,7 @@ class Moderation(Cog):
         muted_role = utils.get(user.roles, name="Muted")
         if muted_role is not None:
             await user.remove_roles(muted_role, reason="Unmuted")
-            await ctx.send(f"**{user.display_name}** has been unmuted.")
+            await ctx.send(f"**{user.mention}** has been unmuted.")
             # logging
             if ctx.guild.id not in self.bot.servers:
                 self.bot.servers[ctx.guild.id] = {}
