@@ -174,7 +174,7 @@ class Moderation(Cog):
             await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.kick(reason=reason)
-        await ctx.send(f"**{user.display_name}** was kicked for **{reason}**.")
+        await ctx.send(f"**{user.mention}** was kicked for **{reason}**.")
 
         # logging
         if ctx.guild.id not in self.bot.servers:
@@ -205,7 +205,7 @@ class Moderation(Cog):
             await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.ban(reason=reason)
-        await ctx.send(f"**{user.display_name}** was banned for **{reason}**.")
+        await ctx.send(f"**{user.mention}** was banned for **{reason}**.")
 
         # logging
         if ctx.guild.id not in self.bot.servers:
