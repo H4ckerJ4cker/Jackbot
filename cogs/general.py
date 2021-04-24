@@ -334,13 +334,13 @@ class General(Cog):
             await ctx.send(":no_entry_sign: Uh oh, quote not found :(")
 
     @Cog.listener()
-    async def on_command_error(self, ctx, error):
+    async def on_command_error(self, ctx, error):  # noqa: C901
         error = getattr(error, "original", error)
 
         if isinstance(error, commands.CommandNotFound):
             return  # No need to log unfound commands anywhere or return feedback
 
-        if isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, commands.MissingRequiredArgument):
             # Missing arguments are likely human error so do not need logging
             parameter_name = error.param.name
             return await ctx.send(
