@@ -88,8 +88,8 @@ class Settings(Cog):
                     self.bot.servers[ctx.guild.id] = {}
                 join_role = self.bot.servers[ctx.guild.id].get("join_role_id")
                 if join_role is None:
-                    await ctx.send(f"No autorole configured to add one type. ``@JackBot settings autorole ["
-                                   f"role_name]``")
+                    await ctx.send("No autorole configured to add one type. ``@JackBot settings autorole ["
+                                   "role_name]``")
                     return
                 role = ctx.guild.get_role(join_role)
                 await ctx.send(f"The current autorole for new members is **{role.name}**")

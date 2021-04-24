@@ -50,7 +50,7 @@ class Fun(Cog):
         embed = Embed(
             color=Colour.blue(),
             title="Guild List",
-            description=f"Guilds I'm in..."
+            description="Guilds I'm in..."
         )
         for guild in self.bot.guilds:
             embed.add_field(name=guild.name, value=f"Members: {guild.member_count}"
@@ -86,7 +86,7 @@ class Fun(Cog):
         poll_channel = self.bot.get_channel(poll_channel_id)
         poll_embed = Embed(color=0x37A7F3, title=poll_question)
         poll_embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-        poll_embed.set_footer(text=f"React bellow to vote.")
+        poll_embed.set_footer(text="React bellow to vote.")
         poll = await poll_channel.send(embed=poll_embed)
         await poll.add_reaction("<:yes:831665509454839890>")
         await poll.add_reaction("<:neutral:831665552908615751>")

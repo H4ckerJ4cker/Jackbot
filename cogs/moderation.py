@@ -132,8 +132,8 @@ class Moderation(Cog):
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))
     async def unmutevc(self, ctx):
         """
-        Unmutes everyone in the voice channel you are in. Useful for playing Among Us. (Requires Among Us Overlord 
-        role.) 
+        Unmutes everyone in the voice channel you are in. Useful for playing Among Us. (Requires Among Us Overlord
+        role.)
         """
         await ctx.message.delete()
         try:
@@ -185,7 +185,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Kicked",
-                description=f"A user was kicked from the server."
+                description="A user was kicked from the server."
             )
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             embed.add_field(name="User", value=user.mention)
@@ -217,7 +217,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Baned",
-                description=f"A user was banned from the server."
+                description="A user was banned from the server."
             )
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             embed.add_field(name="User", value=user.mention)
@@ -248,7 +248,7 @@ class Moderation(Cog):
                     embed = Embed(
                         color=Colour.orange(),
                         title="User Unbanned",
-                        description=f"A user was unbanned from the server."
+                        description="A user was unbanned from the server."
                     )
                     embed.add_field(name="Moderator", value=ctx.message.author.mention)
                     embed.add_field(name="User", value=full_username)
@@ -259,8 +259,8 @@ class Moderation(Cog):
             else:
                 is_banned = False
 
-            if not is_banned:
-                await ctx.send(f"**{full_username}** is not banned.")
+        if not is_banned:
+            await ctx.send(f"**{full_username}** is not banned.")
 
     @command()
     @commands.has_permissions(manage_guild=True)
@@ -298,7 +298,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Muted",
-                description=f"A user was muted."
+                description="A user was muted."
             )
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             embed.add_field(name="User", value=user.mention)
@@ -331,7 +331,7 @@ class Moderation(Cog):
                 embed = Embed(
                     color=Colour.orange(),
                     title="User Unmuted",
-                    description=f"A user was unmuted."
+                    description="A user was unmuted."
                 )
                 embed.add_field(name="Moderator", value=ctx.message.author.mention)
                 embed.add_field(name="User", value=user.mention)
@@ -372,7 +372,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Blocked",
-                description=f"A user was blocked from speaking in a channel."
+                description="A user was blocked from speaking in a channel."
             )
             embed.add_field(name="Channel", value=f"{channel.name}")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
@@ -409,7 +409,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Unblocked",
-                description=f"A user was unblocked from a channel."
+                description="A user was unblocked from a channel."
             )
             embed.add_field(name="Channel", value=f"{channel.name}")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)

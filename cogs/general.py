@@ -255,12 +255,12 @@ class General(Cog):
         """
         embed = Embed(
             title="Hi, I'm JackBott",
-            description="""JackBot is a breath of fresh air for small discord servers who need a simple bot to help 
-            run their server smoothly without having to deal with complex web panels and configuration. If you have a 
+            description="""JackBot is a breath of fresh air for small discord servers who need a simple bot to help
+            run their server smoothly without having to deal with complex web panels and configuration. If you have a
             small community and need to do a bit more as an admin than the built in discord functions, JackBot is for 
-            you. 
+            you.
 
-            JackBot has various features to help you automate your server, such as autorole on join and easy to 
+            JackBot has various features to help you automate your server, such as autorole on join and easy to
             understand moderation commands and logs. JackBot also boasts various other commands such as minecraft server 
             stats and polls, to give your server extra utility.
             """,
@@ -354,7 +354,7 @@ class General(Cog):
             )
         elif isinstance(error, commands.NotOwner):
             return await ctx.send(
-                f"\N{NO ENTRY SIGN} That is a command for JackBot developers only!"
+                "\N{NO ENTRY SIGN} That is a command for JackBot developers only!"
             )
         elif isinstance(error, commands.CommandOnCooldown):
             retry_after = round(error.retry_after)
@@ -363,7 +363,7 @@ class General(Cog):
             )
         elif isinstance(error, commands.NoPrivateMessage):
             return await ctx.send(
-                f"\N{NO ENTRY SIGN} That command is only available in servers."
+                "\N{NO ENTRY SIGN} That command is only available in servers."
             )
         elif isinstance(error, commands.MemberNotFound):
             return await ctx.send("⚠️ Member not found, please try again.")
@@ -378,7 +378,7 @@ class General(Cog):
         elif isinstance(error, commands.BadArgument):
             await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
         elif isinstance(error, Forbidden):
-            await ctx.send(f"⚠️ I do not have the correct permissions to run that command for you.")
+            await ctx.send("⚠️ I do not have the correct permissions to run that command for you.")
         else:
             await ctx.send(
                 "⚠️ An error occurred with that command, the error has been reported."
