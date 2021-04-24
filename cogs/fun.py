@@ -23,7 +23,7 @@ class Fun(Cog):
         if emote is not None:
             await message.add_reaction(emote)
 
-    @command(hidden=True)
+    @command(hidden=True, aliases=["pull", "update"])
     @commands.is_owner()
     async def restart(self, ctx):
         """
