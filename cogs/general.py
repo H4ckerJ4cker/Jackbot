@@ -264,7 +264,6 @@ class General(Cog):
             understand moderation commands and logs. JackBot also boasts various other commands such as minecraft server 
             stats and polls, to give your server extra utility.
             """,
-
         )
         embed.add_field(name="Invite", value="https://pwnker.com/jackbot", inline=False)
         embed.add_field(name="Github", value="https://github.com/pwnker/Jackbot/", inline=False)

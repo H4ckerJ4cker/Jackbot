@@ -76,7 +76,8 @@ class EmbeddedHelpCommand(commands.HelpCommand):
                 embed.add_field(name="Aliases", value=", ".join(f'``{self.clean_prefix}{parent}{alias}``'
                                                                 for alias in command.aliases), inline=False)
             await ctx.send(embed=embed)
-
+        else:
+            await ctx.send(f'No command called "{command.name}" found.')
 
 class Help(commands.Cog):
     def __init__(self, bot):
