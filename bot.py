@@ -94,7 +94,6 @@ async def run():
     bot.load_extension("cogs.fun")
     bot.load_extension("cogs.help")
     bot.load_extension("cogs.settings")
-    bot.load_extension("cogs.music")
     try:
         await bot.start(environ.get("BOT_TOKEN"))
     except KeyboardInterrupt:
