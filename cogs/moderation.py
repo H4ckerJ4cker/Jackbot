@@ -265,7 +265,7 @@ class Moderation(Cog):
             await ctx.send(f"**{full_username}** is not banned.")
 
     @command()
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_channels=True)
     async def mute(self, ctx, user: Member, *, reason="No reason given"):
         """
         Mutes a member.
@@ -310,7 +310,7 @@ class Moderation(Cog):
             await log_channel.send(embed=embed)
 
     @command()
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_channels=True)
     async def unmute(self, ctx, user: Member):
         """
         Unmutes a member. Does not affect users blocked from channels.
@@ -345,7 +345,7 @@ class Moderation(Cog):
             await ctx.send(f"**{user.display_name}** is not muted.")
 
     @command()
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_channels=True)
     async def block(self, ctx, user: Member, channel: Union[TextChannel, VoiceChannel] = None):
         """
         Block a member from speaking in a channel.
@@ -386,7 +386,7 @@ class Moderation(Cog):
             await log_channel.send(embed=embed)
 
     @command()
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_channels=True)
     async def unblock(self, ctx, user: Member, channel: Union[TextChannel, VoiceChannel] = None):
         """
         Unblock a user, allowing them to speak in a channel again. Does not affect muted users.
