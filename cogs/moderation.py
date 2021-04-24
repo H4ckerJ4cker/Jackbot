@@ -1,7 +1,8 @@
-from discord.ext.commands import Cog, command, MemberNotFound
+from typing import Optional, Union
+
 from discord import utils, Member, ChannelType, TextChannel, VoiceChannel, Embed, Colour
 from discord.ext import commands
-from typing import Optional, Union
+from discord.ext.commands import Cog, command
 
 
 def perms(ctx, member):
@@ -21,7 +22,8 @@ class Moderation(Cog):
     @commands.has_permissions(manage_guild=True)
     async def purge(self, ctx, user: Optional[Member], amount: int):
         """
-        Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from that user.
+        Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from
+        that user.
         """
 
         def user_check(message):
@@ -95,9 +97,6 @@ class Moderation(Cog):
             log_channel = self.bot.get_channel(log_channel_id)
             await log_channel.send(embed=embed)
 
-
-
-
     @command(aliases=['m'])
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))
     async def mutevc(self, ctx):
@@ -133,8 +132,8 @@ class Moderation(Cog):
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))
     async def unmutevc(self, ctx):
         """
-        Unmutes everyone in the voice channel you are in. Useful for playing Among Us. (Requires Among Us Overlord 
-        role.) 
+        Unmutes everyone in the voice channel you are in. Useful for playing Among Us. (Requires Among Us Overlord
+        role.)
         """
         await ctx.message.delete()
         try:
@@ -171,7 +170,9 @@ class Moderation(Cog):
         await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.kick(reason=reason)
         await ctx.send(f"**{user.mention}** was kicked for **{reason}**.")
@@ -185,7 +186,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Kicked",
-                description=f"A user was kicked from the server."
+                description="A user was kicked from the server."
             )
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             embed.add_field(name="User", value=user.mention)
@@ -202,7 +203,9 @@ class Moderation(Cog):
         await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.ban(reason=reason)
         await ctx.send(f"**{user.mention}** was banned for **{reason}**.")
@@ -216,7 +219,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Baned",
-                description=f"A user was banned from the server."
+                description="A user was banned from the server."
             )
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             embed.add_field(name="User", value=user.mention)
@@ -247,7 +250,7 @@ class Moderation(Cog):
                     embed = Embed(
                         color=Colour.orange(),
                         title="User Unbanned",
-                        description=f"A user was unbanned from the server."
+                        description="A user was unbanned from the server."
                     )
                     embed.add_field(name="Moderator", value=ctx.message.author.mention)
                     embed.add_field(name="User", value=full_username)
@@ -270,7 +273,9 @@ class Moderation(Cog):
         await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         guild = ctx.guild
         muted_role = utils.get(guild.roles, name="Muted")
@@ -296,7 +301,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Muted",
-                description=f"A user was muted."
+                description="A user was muted."
             )
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
             embed.add_field(name="User", value=user.mention)
@@ -313,7 +318,9 @@ class Moderation(Cog):
         await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         muted_role = utils.get(user.roles, name="Muted")
         if muted_role is not None:
@@ -328,7 +335,7 @@ class Moderation(Cog):
                 embed = Embed(
                     color=Colour.orange(),
                     title="User Unmuted",
-                    description=f"A user was unmuted."
+                    description="A user was unmuted."
                 )
                 embed.add_field(name="Moderator", value=ctx.message.author.mention)
                 embed.add_field(name="User", value=user.mention)
@@ -348,7 +355,9 @@ class Moderation(Cog):
         reason = "User blocked from channel"
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         if channel is None:
             channel = ctx.channel
@@ -368,7 +377,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Blocked",
-                description=f"A user was blocked from speaking in a channel."
+                description="A user was blocked from speaking in a channel."
             )
             embed.add_field(name="Channel", value=f"{channel.name}")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)
@@ -385,7 +394,9 @@ class Moderation(Cog):
         await ctx.message.delete()
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         if channel is None:
             channel = ctx.channel
@@ -404,7 +415,7 @@ class Moderation(Cog):
             embed = Embed(
                 color=Colour.orange(),
                 title="User Unblocked",
-                description=f"A user was unblocked from a channel."
+                description="A user was unblocked from a channel."
             )
             embed.add_field(name="Channel", value=f"{channel.name}")
             embed.add_field(name="Moderator", value=ctx.message.author.mention)

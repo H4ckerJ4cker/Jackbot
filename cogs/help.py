@@ -18,8 +18,8 @@ class EmbeddedHelpCommand(commands.HelpCommand):
         ctx = self.context
         embed = Embed(
             color=Colour.blue(),
-            description=f"Type ``!help [command]`` for more info on a command.\n""You can also type "
-                        f"``!help [category]`` for more info on a category."
+            description="Type ``!help [command]`` for more info on a command.\n""You can also type "
+                        "``!help [category]`` for more info on a category."
         )
         for cog in mapping.keys():
             if cog is not None:
@@ -41,8 +41,8 @@ class EmbeddedHelpCommand(commands.HelpCommand):
         embed = Embed(
             color=Colour.blue(),
             title=cog.description,
-            description=f"Type ``!help [command]`` for more info on a command.\n You can also type "
-                        f"``!help [category]`` for more info on a different category."
+            description="Type ``!help [command]`` for more info on a command.\n You can also type "
+                        "``!help [category]`` for more info on a different category."
         )
         embed.set_footer(text="Run @JackBot prefix in a server to get my prefix in that server.")
         for command in cog.get_commands():
@@ -69,7 +69,8 @@ class EmbeddedHelpCommand(commands.HelpCommand):
                 title=f"``{self.clean_prefix}{parent}{command.name}``",
                 description=command.help
             )
-            embed.add_field(name="Usage", value=f"``{self.clean_prefix}{parent}{command.name} {command.signature}``", inline=False)
+            embed.add_field(name="Usage", value=f"``{self.clean_prefix}{parent}{command.name} {command.signature}``",
+                            inline=False)
 
             if command.aliases:
                 embed.add_field(name="Aliases", value=", ".join(f'``{self.clean_prefix}{parent}{alias}``'
@@ -78,7 +79,9 @@ class EmbeddedHelpCommand(commands.HelpCommand):
         else:
             await ctx.send(f'No command called "{command.name}" found.')
 
+
 class Help(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
         self.bot._original_help_command = bot.help_command

@@ -12,6 +12,7 @@ intents = Intents.default()
 intents.members = True
 intents.messages = True
 
+
 async def get_prefix(bot, message):
     try:
         if message.guild is not None:
@@ -33,14 +34,13 @@ async def run():
         db = await asyncpg.create_pool(**credentials)
         bot = Bot(command_prefix=get_prefix, intents=intents)
         bot.db = db
-        
-        
+
         async def get_vars():
             await bot.wait_until_ready()
             # set global vars
             bot.logging_channel = bot.get_channel(831649393123393547)
             bot.time_start = time.time()
-            
+
             # pull database
             servers = {}
             for guild in bot.guilds:
@@ -71,7 +71,7 @@ async def run():
                     guild.id,
                 )
                 servers[guild.id]["poll_channel_id"] = poll_channel_id
-                
+
                 welcome_channel_id = await bot.db.fetchval(
                     "SELECT welcome_channel_id FROM guilds WHERE guild_id = $1",
                     guild.id,

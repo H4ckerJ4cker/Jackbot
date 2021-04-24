@@ -1,13 +1,12 @@
-from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping, ChannelNotFound, EmojiConverter, MessageConverter
-from discord import utils, Embed, Colour, Message, NotFound, Activity, ActivityType, Forbidden, TextChannel
-from discord.ext import commands, tasks
-import random
-from mcstatus import MinecraftServer
-import aiohttp
-from os import environ
-from typing import Optional, Union
 import datetime
+import random
 import time
+from typing import Optional, Union
+
+from discord import utils, Embed, Colour, NotFound, Activity, ActivityType, Forbidden, TextChannel
+from discord.ext import commands, tasks
+from discord.ext.commands import Cog, command, Context, BucketType, CooldownMapping, MessageConverter
+from mcstatus import MinecraftServer
 
 
 class General(Cog):
@@ -80,16 +79,17 @@ class General(Cog):
         if join_role is not None:
             role = member.guild.get_role(join_role)
             await member.add_roles(role)
-    
+
     @Cog.listener()
     async def on_member_remove(self, member):
-    # Leave message
+        # Leave message
         if member.guild.id not in self.bot.servers:
             self.bot.servers[member.guild.id] = {}
         welcome_channel_id = self.bot.servers[member.guild.id].get("welcome_channel_id")
         if welcome_channel_id is not None:
             welcome_channel = self.bot.get_channel(welcome_channel_id)
-            leave_msg = await welcome_channel.send(f"{member.mention} just left **{member.guild.name}**, sorry to see you go.")   
+            await welcome_channel.send(
+                f"{member.mention} just left **{member.guild.name}**, sorry to see you go.")
 
     @Cog.listener()
     async def on_guild_remove(self, guild):
@@ -156,9 +156,10 @@ class General(Cog):
             self.bot.servers[before.guild.id] = {}
         log_channel_id = self.bot.servers[before.guild.id].get("logging_channel_id")
         log_channel = self.bot.get_channel(log_channel_id)
-        if before.guild is None or before.content == after.content or log_channel_id is None or before.author.bot is True:
+        if (before.guild is None or before.content == after.content or log_channel_id is None or before.author.bot
+                is True):
             return
-            
+
         if before.author.id != self.bot.user.id:
 
             message_embed = Embed(
@@ -199,7 +200,7 @@ class General(Cog):
     @command(aliases=['mc'])
     @commands.cooldown(3, 120, BucketType.user)
     @commands.cooldown(15, 1800, BucketType.guild)
-    async def mcstatus(self, ctx, server_address, port = 25565):
+    async def mcstatus(self, ctx, server_address, port=25565):
         """
         Get information on a minecraft server.
         """
@@ -252,14 +253,17 @@ class General(Cog):
         """
         Get some basic info about the bot.
         """
-        embed = Embed (
-            title="Hi, I'm JackBot",
-            description="""
-            JackBot is a breath of fresh air for small discord servers who need a simple bot to help run their server smoothly without having to deal with complex web panels and configuration. If you have a small community and need to do a bit more as an admin than the built in discord functions, JackBot is for you.
+        embed = Embed(
+            title="Hi, I'm JackBott",
+            description="""JackBot is a breath of fresh air for small discord servers who need a simple bot to help
+            run their server smoothly without having to deal with complex web panels and configuration. If you have a
+            small community and need to do a bit more as an admin than the built in discord functions, JackBot is for
+            you.
 
-JackBot has various features to help you automate your server, such as autorole on join and easy to understand moderation commands and logs. JackBot also boasts various other commands such as minecraft server stats and polls, to give your server extra utility.
+            JackBot has various features to help you automate your server, such as autorole on join and easy to
+            understand moderation commands and logs. JackBot also boasts various other commands such as minecraft server
+            stats and polls, to give your server extra utility.
             """,
-
         )
         embed.add_field(name="Invite", value="https://pwnker.com/jackbot", inline=False)
         embed.add_field(name="Github", value="https://github.com/pwnker/Jackbot/", inline=False)
@@ -267,7 +271,6 @@ JackBot has various features to help you automate your server, such as autorole 
         embed.set_footer(icon_url=self.bot.user.avatar_url, text="Serving servers since 2020.")
 
         await ctx.send(embed=embed)
-
 
     @command()
     async def support(self, ctx):
@@ -315,7 +318,7 @@ JackBot has various features to help you automate your server, such as autorole 
             if isinstance(message, int):
                 channel = ctx if channel is None else channel
                 message = await channel.fetch_message(int(message))
-                                                      
+
             embed = Embed(
                 description=f"{message.content}\n\n[Jump to message]({message.jump_url})",
                 colour=Colour.blue(),
@@ -331,13 +334,13 @@ JackBot has various features to help you automate your server, such as autorole 
             await ctx.send(":no_entry_sign: Uh oh, quote not found :(")
 
     @Cog.listener()
-    async def on_command_error(self, ctx, error):
+    async def on_command_error(self, ctx, error):  # noqa: C901
         error = getattr(error, "original", error)
 
         if isinstance(error, commands.CommandNotFound):
             return  # No need to log unfound commands anywhere or return feedback
 
-        if isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, commands.MissingRequiredArgument):
             # Missing arguments are likely human error so do not need logging
             parameter_name = error.param.name
             return await ctx.send(
@@ -350,7 +353,7 @@ JackBot has various features to help you automate your server, such as autorole 
             )
         elif isinstance(error, commands.NotOwner):
             return await ctx.send(
-                f"\N{NO ENTRY SIGN} That is a command for JackBot developers only!"
+                "\N{NO ENTRY SIGN} That is a command for JackBot developers only!"
             )
         elif isinstance(error, commands.CommandOnCooldown):
             retry_after = round(error.retry_after)
@@ -359,7 +362,7 @@ JackBot has various features to help you automate your server, such as autorole 
             )
         elif isinstance(error, commands.NoPrivateMessage):
             return await ctx.send(
-                f"\N{NO ENTRY SIGN} That command is only available in servers."
+                "\N{NO ENTRY SIGN} That command is only available in servers."
             )
         elif isinstance(error, commands.MemberNotFound):
             return await ctx.send("⚠️ Member not found, please try again.")
@@ -374,7 +377,7 @@ JackBot has various features to help you automate your server, such as autorole 
         elif isinstance(error, commands.BadArgument):
             await ctx.send("⚠️ A error occurred as you supplied a bad argument.")
         elif isinstance(error, Forbidden):
-            await ctx.send(f"⚠️ I do not have the correct permissions to run that command for you.")
+            await ctx.send("⚠️ I do not have the correct permissions to run that command for you.")
         else:
             await ctx.send(
                 "⚠️ An error occurred with that command, the error has been reported."
