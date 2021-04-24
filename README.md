@@ -4,6 +4,7 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/pwnker/jackbot/Basic%20Lint)
 
 
+
 # JackBot
 
 JackBot is a breath of fresh air for small discord servers who need a simple bot to help run their server smoothly without having to deal with complex web panels and configuration. If you have a small community and need to do a bit more as an admin than the built in discord functions, JackBot is for you.
@@ -39,9 +40,9 @@ JackBot has various moderation commands to help keep your server safe. All moder
  ### Logging
  If a logging channel is configured JackBot will log deleted and edited messages. All moderation actions are also logged.
 
-![image](https://user-images.githubusercontent.com/56278210/115974629-f4a21c00-a555-11eb-9b03-09e748d710e1.png)
+![image](https://user-images.githubusercontent.com/56278210/115973858-1bf5ea80-a550-11eb-8bdf-5c21813bf595.png)
 
-![image](https://user-images.githubusercontent.com/56278210/115974638-fc61c080-a555-11eb-839d-be8095cf2f1a.png)
+![image](https://user-images.githubusercontent.com/56278210/115973905-60818600-a550-11eb-86eb-9b7d08d3e973.png)
 
 ### Special Commands
 
@@ -49,19 +50,21 @@ JackBot also has a few extra commands to improve the functionallity of your serv
 
 `!mcstatus`
 
-![image](https://user-images.githubusercontent.com/56278210/115974607-cde3e580-a555-11eb-8967-e77a965757e7.png)
-
+![image](https://user-images.githubusercontent.com/56278210/115974042-c9b5c900-a551-11eb-818c-1aa9726117fa.png)
 
 `!poll`
 
-![image](https://user-images.githubusercontent.com/56278210/115974594-befd3300-a555-11eb-87db-b682a7e1e4b1.png)
-
+![image](https://user-images.githubusercontent.com/56278210/115974074-071a5680-a552-11eb-96aa-657f54f18816.png)
 
 `!quote`
+![image](https://user-images.githubusercontent.com/56278210/115974116-65dfd000-a552-11eb-9f04-c31779c58826.png)
 
-![image](https://user-images.githubusercontent.com/56278210/115974570-9b39ed00-a555-11eb-9f22-3a58770cf0ea.png)
 
+## Documentation
 
+If you need more detailed information about JackBot you can check out the [documentation](https://github.com/pwnker/Jackbot/wiki)
+
+  
 ## Contributing
 
 Contributions are always welcome!
@@ -79,19 +82,19 @@ docker-compose up
 ```
 
 #### Bare Metal
-If you prefer you can also install JackBot bare metal by cloning the repository and instaling the dependancies. You might want to set the enviroment variable `LOCAL_DEBUGGING=1` to stop JackBot trying to connect to a database if you havent set one up.
+If you prefer you can also install JackBot bare metal by cloning the repository and installing the dependencies. You might want to set the enviroment variable `LOCAL_DEBUGGING=1` to stop JackBot trying to connect to a database if you havent set one up.
 ```
 git clone https://github.com/pwnker/Jackbot
 cd Jackbot
 python3 -m pip install requirements.txt
 python3 bot.py
 ``` 
-#### Enviroment Variables
+#### Environment Variables
 
-Make sure you set the correct environment variables either in the docker-compose.yml or in the bare metal installtion to ensure the bot functions correctly.
+Make sure you set the correct environment variables either in the docker-compose.yml or in the bare metal installation to ensure the bot functions correctly.
 
 Setting `LOCAL_DEBUGGING=1` Will stop JackBot from trying to connect to a database and disable the command error handler.
 
-If you are using the database features then you must also set the correct credentials in the environmet variables `PGUSER`, `PGDATABASE`, `PGHOST` and `PGPASSWORD`.
+If you are using the database features then you must also set the correct credentials in the environment variables `PGUSER`, `PGDATABASE`, `PGHOST` and `PGPASSWORD`.
 
 Of course also make sure you set the bot token using `BOT_TOKEN` 
