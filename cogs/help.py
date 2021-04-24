@@ -79,6 +79,7 @@ class EmbeddedHelpCommand(commands.HelpCommand):
         else:
             await ctx.send(f'No command called "{command.name}" found.')
 
+
 class Help(commands.Cog):
 
     def __init__(self, bot):
