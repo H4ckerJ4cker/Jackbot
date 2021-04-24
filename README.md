@@ -40,9 +40,9 @@ JackBot has various moderation commands to help keep your server safe. All moder
  ### Logging
  If a logging channel is configured JackBot will log deleted and edited messages. All moderation actions are also logged.
 
-![image](https://user-images.githubusercontent.com/56278210/115973858-1bf5ea80-a550-11eb-8bdf-5c21813bf595.png)
+![image](https://user-images.githubusercontent.com/56278210/115974873-d89f7a00-a557-11eb-8413-961e80d27021.png)
 
-![image](https://user-images.githubusercontent.com/56278210/115973905-60818600-a550-11eb-86eb-9b7d08d3e973.png)
+![image](https://user-images.githubusercontent.com/56278210/115974638-fc61c080-a555-11eb-839d-be8095cf2f1a.png)
 
 ### Special Commands
 
@@ -50,14 +50,17 @@ JackBot also has a few extra commands to improve the functionallity of your serv
 
 `!mcstatus`
 
-![image](https://user-images.githubusercontent.com/56278210/115974042-c9b5c900-a551-11eb-818c-1aa9726117fa.png)
+ ![image](https://user-images.githubusercontent.com/56278210/115974607-cde3e580-a555-11eb-8967-e77a965757e7.png)
 
-`!poll`
 
-![image](https://user-images.githubusercontent.com/56278210/115974074-071a5680-a552-11eb-96aa-657f54f18816.png)
+ `!poll`
 
-`!quote`
-![image](https://user-images.githubusercontent.com/56278210/115974116-65dfd000-a552-11eb-9f04-c31779c58826.png)
+ ![image](https://user-images.githubusercontent.com/56278210/115974594-befd3300-a555-11eb-87db-b682a7e1e4b1.png)
+
+
+ `!quote`
+
+ ![image](https://user-images.githubusercontent.com/56278210/115974570-9b39ed00-a555-11eb-9f22-3a58770cf0ea.png)
 
 
 ## Documentation
