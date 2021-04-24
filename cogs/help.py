@@ -69,7 +69,8 @@ class EmbeddedHelpCommand(commands.HelpCommand):
                 title=f"``{self.clean_prefix}{parent}{command.name}``",
                 description=command.help
             )
-            embed.add_field(name="Usage", value=f"``{self.clean_prefix}{parent}{command.name} {command.signature}``", inline=False)
+            embed.add_field(name="Usage", value=f"``{self.clean_prefix}{parent}{command.name} {command.signature}``",
+                            inline=False)
 
             if command.aliases:
                 embed.add_field(name="Aliases", value=", ".join(f'``{self.clean_prefix}{parent}{alias}``'

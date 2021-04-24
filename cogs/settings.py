@@ -1,7 +1,8 @@
-from discord.ext.commands import Cog, command
-from discord.ext import commands
-from discord import utils, TextChannel, Embed, Colour
 import typing
+
+from discord import utils, TextChannel, Embed, Colour
+from discord.ext import commands
+from discord.ext.commands import Cog
 
 
 class Settings(Cog):
@@ -55,7 +56,8 @@ class Settings(Cog):
                                f"[new prefix]``")
             else:
                 await self.bot.db.execute(
-                    "INSERT INTO guilds(guild_id, prefix) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
+                    "INSERT INTO guilds(guild_id, prefix) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET prefix "
+                    "= $2",
                     ctx.guild.id,
                     new_prefix,
                 )
@@ -197,7 +199,8 @@ class Settings(Cog):
 
             elif type(logs_channel) == TextChannel:
                 await self.bot.db.execute(
-                    "INSERT INTO guilds(guild_id, logging_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
+                    "INSERT INTO guilds(guild_id, logging_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE "
+                    "SET "
                     "logging_channel_id = $2",
                     ctx.guild.id,
                     logs_channel.id,
@@ -212,12 +215,12 @@ class Settings(Cog):
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
 
-
     @settings.command(aliases=['welcomechannel', 'join', 'setwelcomechannel'])
     @commands.has_permissions(manage_guild=True)
     async def welcome(self, ctx, *, welcome_channel: typing.Union[TextChannel, str] = None):
         """
-        Set the welcome channel where join and leave messages will be sent. If you pass in "reset" the welcome channel will be reset.
+        Set the welcome channel where join and leave messages will be sent. If you pass in "reset" the welcome
+        channel will be reset.
         """
         if ctx.guild is not None:
             if welcome_channel == "reset":
@@ -226,15 +229,19 @@ class Settings(Cog):
                     ctx.guild.id
                 )
                 self.bot.servers[ctx.guild.id]["welcome_channel_id"] = None
-                await ctx.send("Welcome messages disabled. I will not send join or leave messages. To enable run the command again with"
-                               " a channel as an argument. ``@JackBot settings welcomechannel [channel]``")
+                await ctx.send(
+                    "Welcome messages disabled. I will not send join or leave messages. To enable run the command "
+                    "again with "
+                    " a channel as an argument. ``@JackBot settings welcomechannel [channel]``")
                 return
             elif welcome_channel is None:
                 if ctx.guild.id not in self.bot.servers:
                     self.bot.servers[ctx.guild.id] = {}
                 db_channel = self.bot.servers[ctx.guild.id].get("welcome_channel_id")
                 if db_channel is None:
-                    await ctx.send("Welcome messages disabled. I will not send join or leave messages. To enable run the command again with a channel as an argument. ``@JackBot settings welcomechannel [channel]``")
+                    await ctx.send(
+                        "Welcome messages disabled. I will not send join or leave messages. To enable run the command "
+                        "again with a channel as an argument. ``@JackBot settings welcomechannel [channel]``")
                     return
                 else:
                     channel = db_channel
@@ -245,7 +252,8 @@ class Settings(Cog):
 
             elif type(welcome_channel) == TextChannel:
                 await self.bot.db.execute(
-                    "INSERT INTO guilds(guild_id, welcome_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE SET "
+                    "INSERT INTO guilds(guild_id, welcome_channel_id) VALUES($1, $2) ON CONFLICT (guild_id) DO UPDATE "
+                    "SET "
                     "welcome_channel_id = $2",
                     ctx.guild.id,
                     welcome_channel.id,
@@ -259,6 +267,7 @@ class Settings(Cog):
                 await ctx.send("⚠️ Channel not found, please try again.")
         else:
             await ctx.send("\N{NO ENTRY SIGN} That command is only available in servers.")
-            
+
+
 def setup(bot):
     bot.add_cog(Settings(bot))

@@ -65,11 +65,11 @@ class Fun(Cog):
         await guild.leave()
         await ctx.message.add_reaction("✅")
 
-
     @command()
     async def poll(self, ctx: Context, *, poll_question: str):
         """
-        Takes a poll question and creates a poll in the poll channel or in the same channel it was invoked if no poll channel is setup.
+        Takes a poll question and creates a poll in the poll channel or in the same channel it was invoked if no poll
+        channel is setup.
         """
         if ctx.guild.id not in self.bot.servers:
             self.bot.servers[ctx.guild.id] = {}

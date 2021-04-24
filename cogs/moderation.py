@@ -1,7 +1,8 @@
-from discord.ext.commands import Cog, command, MemberNotFound
+from typing import Optional, Union
+
 from discord import utils, Member, ChannelType, TextChannel, VoiceChannel, Embed, Colour
 from discord.ext import commands
-from typing import Optional, Union
+from discord.ext.commands import Cog, command
 
 
 def perms(ctx, member):
@@ -21,7 +22,8 @@ class Moderation(Cog):
     @commands.has_permissions(manage_guild=True)
     async def purge(self, ctx, user: Optional[Member], amount: int):
         """
-        Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from that user.
+        Deletes x amount of messages in a channel. (The default is 5.) Specify a user to only delete messages from
+        that user.
         """
 
         def user_check(message):
@@ -95,9 +97,6 @@ class Moderation(Cog):
             log_channel = self.bot.get_channel(log_channel_id)
             await log_channel.send(embed=embed)
 
-
-
-
     @command(aliases=['m'])
     @commands.check_any(commands.has_role('Among Us Overlord'), commands.has_permissions(manage_channels=True))
     async def mutevc(self, ctx):
@@ -170,7 +169,9 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.kick(reason=reason)
         await ctx.send(f"**{user.display_name}** was kicked for **{reason}**.")
@@ -200,7 +201,9 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         await user.ban(reason=reason)
         await ctx.send(f"**{user.display_name}** was banned for **{reason}**.")
@@ -256,8 +259,8 @@ class Moderation(Cog):
             else:
                 is_banned = False
 
-        if not is_banned:
-            await ctx.send(f"**{full_username}** is not banned.")
+            if not is_banned:
+                await ctx.send(f"**{full_username}** is not banned.")
 
     @command()
     @commands.has_permissions(manage_guild=True)
@@ -267,7 +270,9 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         guild = ctx.guild
         muted_role = utils.get(guild.roles, name="Muted")
@@ -309,7 +314,9 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         muted_role = utils.get(user.roles, name="Muted")
         if muted_role is not None:
@@ -343,7 +350,9 @@ class Moderation(Cog):
         reason = "User blocked from channel"
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         if channel is None:
             channel = ctx.channel
@@ -379,7 +388,9 @@ class Moderation(Cog):
         """
         check = perms(ctx, user)
         if check is not True:
-            await ctx.send("You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
+            await ctx.send(
+                "You can't moderate a member with a higher or equal role to you! (If this seems wrong make sure the "
+                "JackBot role is higher in the role list than the top role of the user you are trying to moderate.)")
             return
         if channel is None:
             channel = ctx.channel
