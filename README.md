@@ -11,9 +11,9 @@ JackBot is a breath of fresh air for small discord servers who need a simple bot
 
 JackBot has various features to help you automate your server, such as autorole on join and easy to understand moderation commands and logs. JackBot also boasts various other commands such as minecraft server stats and polls, to give your server extra utility.
 
-If you have any suggestions or need support don't hesitate to join the server linked below
+If you have any suggestions or need support don't hesitate to join the server linked below.
 
-[![Invite](https://img.shields.io/website?style=for-the-badge&up_message=Invite%20Jackbot&label=&up_color=%236F85CDFF&url=https%3A%2F%2Fpwnker.com)](https://pwnker.com)
+[![Invite](https://img.shields.io/website?style=for-the-badge&up_message=Invite%20Jackbot&label=&up_color=%236F85CDFF&url=https%3A%2F%2Fpwnker.com)](https://pwnker.com/jackbot)
 
 [![Discord](https://img.shields.io/discord/827894573711228948?color=%236F85CDFF&logo=discord&style=for-the-badge&label=Support)](https://pwnker.com/discord) 
 ## Features
