@@ -36,7 +36,7 @@ class General(Cog):
     async def status(self):
         activity_guilds = Activity(name=f'{len(self.bot.guilds)} servers', type=ActivityType.watching)
         activity_help = Activity(name='@Jackbot help', type=ActivityType.playing)
-        activity_listening = Activity(name='to your suggestions', type=ActivityType.listening)
+        activity_listening = Activity(name='your suggestions', type=ActivityType.listening)
         activity_list = [activity_help, activity_guilds, activity_listening]
         await self.bot.change_presence(activity=random.choice(activity_list))
 
