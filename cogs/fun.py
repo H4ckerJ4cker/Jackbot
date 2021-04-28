@@ -14,14 +14,16 @@ class Fun(Cog):
 
     @command(hidden=True)
     @commands.is_owner()
-    async def send(self, ctx, emote: Optional[EmojiConverter] = None, *, text):
+    async def send(self, ctx, channel: Optional[TextChannel], *, text):
         """
         Sends a message as the bot.
         """
         await ctx.message.delete()
-        message = await ctx.send(text)
-        if emote is not None:
-            await message.add_reaction(emote)
+        if channel is not None:
+            send_location = channel
+        else:
+            send_location = ctx
+        await send_location.send(text)
 
     @command(hidden=True, aliases=["pull", "update"])
     @commands.is_owner()
