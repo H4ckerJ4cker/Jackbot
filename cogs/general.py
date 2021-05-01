@@ -2,6 +2,7 @@ import datetime
 import random
 import time
 from typing import Optional, Union
+import re
 
 from discord import utils, Embed, Colour, NotFound, Activity, ActivityType, Forbidden, TextChannel
 from discord.ext import commands, tasks
@@ -101,6 +102,25 @@ class General(Cog):
 
     cd_mapping = CooldownMapping.from_cooldown(3, 60, BucketType.member)
     cd_mapping_bot = CooldownMapping.from_cooldown(1, 60, BucketType.member)
+
+    @Cog.listener()
+    async def on_message(self, message):
+        if message.channel.id == self.bot.coords_channel_id and not message.author.bot:
+            await message.delete()
+            if re.match(r"^(\d+\s?\d+?\s\d+\s[a-zA-Z0-9\s]+)$", message.content):
+                content = re.split(r"(\d+\s?\d+?\s\d+\s)", message.content)
+                coords = content[1]
+                description = content[2]
+                embed = Embed(
+                    title="".join(description)
+                )
+                embed.add_field(name="Coordinates", value=coords)
+                embed.add_field(name="User", value=message.author.mention)
+                await message.channel.send(embed=embed)
+            else:
+                await message.channel.send(f"{message.author.mention} those coordinates aren't in the correct form. "
+                                           f"Please format them `X Y Z <description>` or `X Z <description>`",
+                                           delete_after=10)
 
     @Cog.listener()
     async def on_message_delete(self, message):

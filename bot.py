@@ -39,6 +39,7 @@ async def run():
             await bot.wait_until_ready()
             # set global vars
             bot.logging_channel = bot.get_channel(831649393123393547)
+            bot.coords_channel_id = 838033213708435457
             bot.time_start = time.time()
 
             # pull database
