@@ -105,7 +105,7 @@ class General(Cog):
 
     @Cog.listener()
     async def on_message(self, message):
-        if message.channel.id == 835469907147096067 and not message.author.bot:
+        if message.channel.id == self.bot.coords_channel_id and not message.author.bot:
             await message.delete()
             if re.match(r"^((\d+ ){2,3}[a-zA-Z ][a-zA-Z0-9 ]*)$", message.content):
                 content = re.split(r"(\d+( \d+){1,2})", message.content)
