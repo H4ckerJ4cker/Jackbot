@@ -116,7 +116,9 @@ class General(Cog):
                 )
                 embed.add_field(name="Coordinates", value=coords)
                 embed.add_field(name="User", value=message.author.mention)
-                await message.channel.send(embed=embed)
+                bot_message = await message.channel.send(embed=embed)
+                await bot_message.add_reaction("👍")
+                await bot_message.add_reaction("👎")
             else:
                 await message.channel.send(f"{message.author.mention} those coordinates aren't in the correct form. "
                                            f"Please format them `X Y Z <description>` or `X Z <description>`",
