@@ -107,7 +107,7 @@ class General(Cog):
     async def on_message(self, message):
         if message.channel.id == self.bot.coords_channel_id and not message.author.bot:
             await message.delete()
-            if re.match(r"^(\d+\s\d+\s[a-zA-Z0-9\s]+)$", message.content):
+            if re.match(r"^((\d+\s){2,3}[a-zA-Z\s][a-zA-Z0-9\s]*)$", message.content):
                 content = re.split(r"(\d+\s?\d+?\s\d+\s)", message.content)
                 coords = content[1]
                 description = content[2]
@@ -121,7 +121,7 @@ class General(Cog):
                 await bot_message.add_reaction("👎")
             else:
                 await message.channel.send(f"{message.author.mention} those coordinates aren't in the correct form. "
-                                           f"Please format them `X Z <description>`",
+                                           f"Please format them `X Y Z <description>` or `X Z <description>`",
                                            delete_after=10)
 
     @Cog.listener()
