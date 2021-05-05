@@ -121,7 +121,7 @@ class General(Cog):
                 await bot_message.add_reaction("👎")
             else:
                 await message.channel.send(f"{message.author.mention} those coordinates aren't in the correct form. "
-                                           f"Please format them `X Z <description>`",
+                                           f"Please format them `X Z <description>` or `X Y Z <description>`",
                                            delete_after=10)
 
     @Cog.listener()
