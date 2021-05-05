@@ -18,15 +18,15 @@ class EmbeddedHelpCommand(commands.HelpCommand):
         ctx = self.context
         embed = Embed(
             color=Colour.blue(),
-            description="Type ``!help [command]`` for more info on a command.\n""You can also type "
-                        "``!help [category]`` for more info on a category."
+            description=f"Type ``{self.clean_prefix}help [command]`` for more info on a command.\n""You can also type "
+                        f"``{self.clean_prefix}help [category]`` for more info on a category."
         )
         for cog in mapping.keys():
             if cog is not None:
                 if cog.get_commands():
                     embed.add_field(name=cog.qualified_name,
-                                    value=f"``!help {cog.qualified_name.lower()}``")
-                embed.set_footer(text="Run @JackBot prefix in a server to get my prefix in that server.")
+                                    value=f"``{self.clean_prefix}help {cog.qualified_name.lower()}``")
+                embed.set_footer(text=f"Run {self.clean_prefix} prefix in a server to get my prefix in that server.")
 
         dm = await ctx.author.send(embed=embed)
         if ctx.guild is not None:
@@ -41,13 +41,13 @@ class EmbeddedHelpCommand(commands.HelpCommand):
         embed = Embed(
             color=Colour.blue(),
             title=cog.description,
-            description="Type ``!help [command]`` for more info on a command.\n You can also type "
-                        "``!help [category]`` for more info on a different category."
+            description=f"Type ``{self.clean_prefix}help [command]`` for more info on a command.\n You can also type "
+                        f"``{self.clean_prefix}help [category]`` for more info on a different category."
         )
-        embed.set_footer(text="Run @JackBot prefix in a server to get my prefix in that server.")
+        embed.set_footer(text=f"Run {self.clean_prefix}prefix in a server to get my prefix in that server.")
         for command in cog.get_commands():
             if command.hidden is not True:
-                embed.add_field(name=f"``!{command.name}``", value=command.help)
+                embed.add_field(name=f"``{self.clean_prefix}{command.name}``", value=command.help)
 
         dm = await ctx.author.send(embed=embed)
         if ctx.guild is not None:
