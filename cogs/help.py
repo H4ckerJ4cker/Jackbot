@@ -28,13 +28,7 @@ class EmbeddedHelpCommand(commands.HelpCommand):
                                     value=f"``{self.clean_prefix}help {cog.qualified_name.lower()}``")
                 embed.set_footer(text=f"Run {self.clean_prefix} prefix in a server to get my prefix in that server.")
 
-        dm = await ctx.author.send(embed=embed)
-        if ctx.guild is not None:
-            embed = Embed(
-                description=f"[**Jump to DM**]({dm.jump_url})"
-            )
-            await ctx.send(f"{ctx.author.mention} help info sent to DMs", delete_after=10, embed=embed)
-            await ctx.message.delete()
+        await ctx.send(embed=embed)
 
     async def send_cog_help(self, cog):
         ctx = self.context
@@ -49,13 +43,7 @@ class EmbeddedHelpCommand(commands.HelpCommand):
             if command.hidden is not True:
                 embed.add_field(name=f"``{self.clean_prefix}{command.name}``", value=command.help)
 
-        dm = await ctx.author.send(embed=embed)
-        if ctx.guild is not None:
-            embed = Embed(
-                description=f"[**Jump to DM**]({dm.jump_url})"
-            )
-            await ctx.send(f"{ctx.author.mention} help info sent to DMs", delete_after=10, embed=embed)
-            await ctx.message.delete()
+        await ctx.send(embed=embed)
 
     async def send_command_help(self, command):
         ctx = self.context
